@@ -1,0 +1,8 @@
+{
+  "generator-jhipster:7.3.0": {
+    "promptValues": {
+      "packageName": "com.auth0.flickr2",
+      "nativeLanguage": "en"
+    }
+  }
+}

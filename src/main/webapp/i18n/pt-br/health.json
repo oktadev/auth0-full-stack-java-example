@@ -1,0 +1,31 @@
+{
+  "health": {
+    "title": "Estado do Sistema",
+    "refresh.button": "Atualizar",
+    "stacktrace": "Stacktrace",
+    "details": {
+      "details": "Detalhes",
+      "properties": "Propriedades",
+      "name": "Nome",
+      "value": "Valor",
+      "error": "Erro"
+    },
+    "indicator": {
+      "diskSpace": "Espaço em disco",
+      "mail": "E-mail",
+      "livenessState": "Liveness state",
+      "readinessState": "Readiness state",
+      "ping": "Application",
+      "db": "Banco de dados"
+    },
+    "table": {
+      "service": "Nome do Serviço",
+      "status": "Estado"
+    },
+    "status": {
+      "UNKNOWN": "DESCONHECIDO",
+      "UP": "UP",
+      "DOWN": "DOWN"
+    }
+  }
+}
