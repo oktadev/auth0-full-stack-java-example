@@ -112,14 +112,6 @@ describe('Photo e2e test', () => {
 
     cy.setFieldImageAsBytesOfEntity('image', 'integration-test.png', 'image/png');
 
-    cy.get(`[data-cy="height"]`).type('99459').should('have.value', '99459');
-
-    cy.get(`[data-cy="width"]`).type('61514').should('have.value', '61514');
-
-    cy.get(`[data-cy="taken"]`).type('2021-10-11T16:46').should('have.value', '2021-10-11T16:46');
-
-    cy.get(`[data-cy="uploaded"]`).type('2021-10-11T15:23').should('have.value', '2021-10-11T15:23');
-
     cy.setFieldSelectToLastOfEntity('album');
 
     cy.setFieldSelectToLastOfEntity('tag');

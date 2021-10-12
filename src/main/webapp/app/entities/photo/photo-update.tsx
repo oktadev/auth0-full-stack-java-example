@@ -77,6 +77,30 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
           tags: photoEntity?.tags?.map(e => e.id.toString()),
         };
 
+  const metadata = (
+    <div>
+      <ValidatedField label={translate('flickr2App.photo.height')} id="photo-height" name="height" data-cy="height" type="text" />
+      <ValidatedField label={translate('flickr2App.photo.width')} id="photo-width" name="width" data-cy="width" type="text" />
+      <ValidatedField
+        label={translate('flickr2App.photo.taken')}
+        id="photo-taken"
+        name="taken"
+        data-cy="taken"
+        type="datetime-local"
+        placeholder="YYYY-MM-DD HH:mm"
+      />
+      <ValidatedField
+        label={translate('flickr2App.photo.uploaded')}
+        id="photo-uploaded"
+        name="uploaded"
+        data-cy="uploaded"
+        type="datetime-local"
+        placeholder="YYYY-MM-DD HH:mm"
+      />
+    </div>
+  );
+  const metadataRows = isNew ? '' : metadata;
+
   return (
     <div>
       <Row className="justify-content-center">
@@ -130,24 +154,7 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
                   required: { value: true, message: translate('entity.validation.required') },
                 }}
               />
-              <ValidatedField label={translate('flickr2App.photo.height')} id="photo-height" name="height" data-cy="height" type="text" />
-              <ValidatedField label={translate('flickr2App.photo.width')} id="photo-width" name="width" data-cy="width" type="text" />
-              <ValidatedField
-                label={translate('flickr2App.photo.taken')}
-                id="photo-taken"
-                name="taken"
-                data-cy="taken"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-              />
-              <ValidatedField
-                label={translate('flickr2App.photo.uploaded')}
-                id="photo-uploaded"
-                name="uploaded"
-                data-cy="uploaded"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-              />
+              {metadataRows}
               <ValidatedField id="photo-album" name="albumId" data-cy="album" label={translate('flickr2App.photo.album')} type="select">
                 <option value="" key="0" />
                 {albums
