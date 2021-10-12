@@ -43,6 +43,10 @@
     "languages": ["en", "pt-br"],
     "enableGradleEnterprise": false,
     "entities": ["Album", "Photo", "Tag"],
-    "lastLiquibaseTimestamp": 1634025089000
+    "lastLiquibaseTimestamp": 1634025089000,
+    "herokuAppName": "flickr-2",
+    "herokuDeployType": "git",
+    "herokuJavaVersion": "11",
+    "useOkta": false
   }
 }
