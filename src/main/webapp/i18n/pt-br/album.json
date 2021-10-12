@@ -1,0 +1,27 @@
+{
+  "flickr2App": {
+    "album": {
+      "home": {
+        "title": "Albums",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Album",
+        "createOrEditLabel": "Criar ou editar Album",
+        "notFound": "Nenhum Album encontrado"
+      },
+      "created": "Um novo Album foi criado com o identificador {{ param }}",
+      "updated": "Um Album foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Album foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Album {{ id }}?"
+      },
+      "detail": {
+        "title": "Album"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "created": "Created",
+      "user": "User"
+    }
+  }
+}

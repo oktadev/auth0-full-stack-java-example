@@ -41,6 +41,8 @@
     "devServerPort": 9060,
     "clientPackageManager": "npm",
     "languages": ["en", "pt-br"],
-    "enableGradleEnterprise": false
+    "enableGradleEnterprise": false,
+    "entities": ["Album", "Photo", "Tag"],
+    "lastLiquibaseTimestamp": 1634025089000
   }
 }

@@ -48,6 +48,11 @@ public class CacheConfiguration {
             createCache(cm, com.auth0.flickr2.domain.User.class.getName());
             createCache(cm, com.auth0.flickr2.domain.Authority.class.getName());
             createCache(cm, com.auth0.flickr2.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.auth0.flickr2.domain.Album.class.getName());
+            createCache(cm, com.auth0.flickr2.domain.Photo.class.getName());
+            createCache(cm, com.auth0.flickr2.domain.Photo.class.getName() + ".tags");
+            createCache(cm, com.auth0.flickr2.domain.Tag.class.getName());
+            createCache(cm, com.auth0.flickr2.domain.Tag.class.getName() + ".photos");
             // jhipster-needle-ehcache-add-entry
         };
     }
