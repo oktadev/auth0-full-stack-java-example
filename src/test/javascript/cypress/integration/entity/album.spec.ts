@@ -16,6 +16,9 @@ describe('Album e2e test', () => {
   const albumPageUrlPattern = new RegExp('/album(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'admin';
   const password = Cypress.env('E2E_PASSWORD') ?? 'admin';
+  const albumSample = { title: 'Awesome' };
+
+  let album: any;
 
   beforeEach(() => {
     cy.getOauth2Data();
@@ -27,9 +30,8 @@ describe('Album e2e test', () => {
     cy.get(entityItemSelector).should('exist');
   });
 
-  afterEach(() => {
-    cy.oauthLogout();
-    cy.clearCache();
+  beforeEach(() => {
+    Cypress.Cookies.preserveOnce('XSRF-TOKEN', 'JSESSIONID');
   });
 
   beforeEach(() => {
@@ -38,11 +40,27 @@ describe('Album e2e test', () => {
     cy.intercept('DELETE', '/api/albums/*').as('deleteEntityRequest');
   });
 
-  it('should load Albums', () => {
+  afterEach(() => {
+    if (album) {
+      cy.authenticatedRequest({
+        method: 'DELETE',
+        url: `/api/albums/${album.id}`,
+      }).then(() => {
+        album = undefined;
+      });
+    }
+  });
+
+  afterEach(() => {
+    cy.oauthLogout();
+    cy.clearCache();
+  });
+
+  it('Albums menu should load Albums page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('album');
     cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length === 0) {
+      if (response!.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
         cy.get(entityTableSelector).should('exist');
@@ -52,100 +70,120 @@ describe('Album e2e test', () => {
     cy.url().should('match', albumPageUrlPattern);
   });
 
-  it('should load details Album page', function () {
-    cy.visit(albumPageUrl);
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length === 0) {
-        this.skip();
-      }
+  describe('Album page', () => {
+    describe('create button click', () => {
+      beforeEach(() => {
+        cy.visit(albumPageUrl);
+        cy.wait('@entitiesRequest');
+      });
+
+      it('should load create Album page', () => {
+        cy.get(entityCreateButtonSelector).click({ force: true });
+        cy.url().should('match', new RegExp('/album/new$'));
+        cy.getEntityCreateUpdateHeading('Album');
+        cy.get(entityCreateSaveButtonSelector).should('exist');
+        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.wait('@entitiesRequest').then(({ response }) => {
+          expect(response!.statusCode).to.equal(200);
+        });
+        cy.url().should('match', albumPageUrlPattern);
+      });
     });
-    cy.get(entityDetailsButtonSelector).first().click({ force: true });
-    cy.getEntityDetailsHeading('album');
-    cy.get(entityDetailsBackButtonSelector).click({ force: true });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
-    });
-    cy.url().should('match', albumPageUrlPattern);
-  });
 
-  it('should load create Album page', () => {
-    cy.visit(albumPageUrl);
-    cy.wait('@entitiesRequest');
-    cy.get(entityCreateButtonSelector).click({ force: true });
-    cy.getEntityCreateUpdateHeading('Album');
-    cy.get(entityCreateSaveButtonSelector).should('exist');
-    cy.get(entityCreateCancelButtonSelector).click({ force: true });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
-    });
-    cy.url().should('match', albumPageUrlPattern);
-  });
+    describe('with existing value', () => {
+      beforeEach(() => {
+        cy.authenticatedRequest({
+          method: 'POST',
+          url: '/api/albums',
+          body: albumSample,
+        }).then(({ body }) => {
+          album = body;
 
-  it('should load edit Album page', function () {
-    cy.visit(albumPageUrl);
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length === 0) {
-        this.skip();
-      }
-    });
-    cy.get(entityEditButtonSelector).first().click({ force: true });
-    cy.getEntityCreateUpdateHeading('Album');
-    cy.get(entityCreateSaveButtonSelector).should('exist');
-    cy.get(entityCreateCancelButtonSelector).click({ force: true });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
-    });
-    cy.url().should('match', albumPageUrlPattern);
-  });
+          cy.intercept(
+            {
+              method: 'GET',
+              url: '/api/albums+(?*|)',
+              times: 1,
+            },
+            {
+              statusCode: 200,
+              body: [album],
+            }
+          ).as('entitiesRequestInternal');
+        });
 
-  it('should create an instance of Album', () => {
-    cy.visit(albumPageUrl);
-    cy.get(entityCreateButtonSelector).click({ force: true });
-    cy.getEntityCreateUpdateHeading('Album');
+        cy.visit(albumPageUrl);
 
-    cy.get(`[data-cy="title"]`).type('Soft').should('have.value', 'Soft');
+        cy.wait('@entitiesRequestInternal');
+      });
 
-    cy.get(`[data-cy="description"]`)
-      .type('../fake-data/blob/hipster.txt')
-      .invoke('val')
-      .should('match', new RegExp('../fake-data/blob/hipster.txt'));
+      it('detail button click should load details Album page', () => {
+        cy.get(entityDetailsButtonSelector).first().click();
+        cy.getEntityDetailsHeading('album');
+        cy.get(entityDetailsBackButtonSelector).click({ force: true });
+        cy.wait('@entitiesRequest').then(({ response }) => {
+          expect(response!.statusCode).to.equal(200);
+        });
+        cy.url().should('match', albumPageUrlPattern);
+      });
 
-    cy.get(`[data-cy="created"]`).type('2021-10-12T07:20').should('have.value', '2021-10-12T07:20');
+      it('edit button click should load edit Album page', () => {
+        cy.get(entityEditButtonSelector).first().click();
+        cy.getEntityCreateUpdateHeading('Album');
+        cy.get(entityCreateSaveButtonSelector).should('exist');
+        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.wait('@entitiesRequest').then(({ response }) => {
+          expect(response!.statusCode).to.equal(200);
+        });
+        cy.url().should('match', albumPageUrlPattern);
+      });
 
-    cy.setFieldSelectToLastOfEntity('user');
-
-    cy.get(entityCreateSaveButtonSelector).click({ force: true });
-    cy.scrollTo('top', { ensureScrollable: false });
-    cy.get(entityCreateSaveButtonSelector).should('not.exist');
-    cy.wait('@postEntityRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(201);
-    });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
-    });
-    cy.url().should('match', albumPageUrlPattern);
-  });
-
-  it('should delete last instance of Album', function () {
-    cy.intercept('GET', '/api/albums/*').as('dialogDeleteRequest');
-    cy.visit(albumPageUrl);
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length > 0) {
-        cy.get(entityTableSelector).should('have.lengthOf', response.body.length);
-        cy.get(entityDeleteButtonSelector).last().click({ force: true });
+      it('last delete button click should delete instance of Album', () => {
+        cy.intercept('GET', '/api/albums/*').as('dialogDeleteRequest');
+        cy.get(entityDeleteButtonSelector).last().click();
         cy.wait('@dialogDeleteRequest');
         cy.getEntityDeleteDialogHeading('album').should('exist');
         cy.get(entityConfirmDeleteButtonSelector).click({ force: true });
         cy.wait('@deleteEntityRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(204);
+          expect(response!.statusCode).to.equal(204);
         });
         cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
+          expect(response!.statusCode).to.equal(200);
         });
         cy.url().should('match', albumPageUrlPattern);
-      } else {
-        this.skip();
-      }
+
+        album = undefined;
+      });
+    });
+  });
+
+  describe('new Album page', () => {
+    beforeEach(() => {
+      cy.visit(`${albumPageUrl}`);
+      cy.get(entityCreateButtonSelector).click({ force: true });
+      cy.getEntityCreateUpdateHeading('Album');
+    });
+
+    it('should create an instance of Album', () => {
+      cy.get(`[data-cy="title"]`).type('Soft').should('have.value', 'Soft');
+
+      cy.get(`[data-cy="description"]`)
+        .type('../fake-data/blob/hipster.txt')
+        .invoke('val')
+        .should('match', new RegExp('../fake-data/blob/hipster.txt'));
+
+      cy.get(`[data-cy="created"]`).type('2021-10-22T04:09').should('have.value', '2021-10-22T04:09');
+
+      cy.get(entityCreateSaveButtonSelector).click();
+
+      cy.wait('@postEntityRequest').then(({ response }) => {
+        expect(response!.statusCode).to.equal(201);
+        album = response!.body;
+      });
+      cy.wait('@entitiesRequest').then(({ response }) => {
+        expect(response!.statusCode).to.equal(200);
+      });
+      cy.url().should('match', albumPageUrlPattern);
     });
   });
 });

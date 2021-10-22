@@ -25,7 +25,6 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const loading = useAppSelector(state => state.photo.loading);
   const updating = useAppSelector(state => state.photo.updating);
   const updateSuccess = useAppSelector(state => state.photo.updateSuccess);
-
   const handleClose = () => {
     props.history.push('/photo');
   };
@@ -53,7 +52,7 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
       ...photoEntity,
       ...values,
       tags: mapIdList(values.tags),
-      album: albums.find(it => it.id.toString() === values.albumId.toString()),
+      album: albums.find(it => it.id.toString() === values.album.toString()),
     };
 
     if (isNew) {
@@ -73,7 +72,7 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
           ...photoEntity,
           taken: convertDateTimeFromServer(photoEntity.taken),
           uploaded: convertDateTimeFromServer(photoEntity.uploaded),
-          albumId: photoEntity?.album?.id,
+          album: photoEntity?.album?.id,
           tags: photoEntity?.tags?.map(e => e.id.toString()),
         };
 

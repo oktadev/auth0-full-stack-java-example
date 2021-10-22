@@ -45,6 +45,25 @@ export const classInvalid = 'is-invalid';
 
 export const classValid = 'is-valid';
 
+Cypress.Commands.add('authenticatedRequest', (data: any) => {
+  return cy.getCookie('XSRF-TOKEN').then(csrfCookie => {
+    return cy.request({
+      ...data,
+      headers: {
+        'X-XSRF-TOKEN': csrfCookie?.value,
+      },
+    });
+  });
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      authenticatedRequest(data: any): Cypress.Chainable;
+    }
+  }
+}
+
 import 'cypress-audit/commands';
 // Convert this to a module instead of script (allows import/export)
 export {};

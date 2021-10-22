@@ -12,7 +12,7 @@ Cypress.Commands.add('getManagementInfo', () => {
 
 declare global {
   namespace Cypress {
-    interface Chainable<Subject> {
+    interface Chainable {
       getManagementInfo(): Cypress.Chainable;
     }
   }

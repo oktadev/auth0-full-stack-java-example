@@ -22,7 +22,6 @@ export const TagUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const loading = useAppSelector(state => state.tag.loading);
   const updating = useAppSelector(state => state.tag.updating);
   const updateSuccess = useAppSelector(state => state.tag.updateSuccess);
-
   const handleClose = () => {
     props.history.push('/tag');
   };

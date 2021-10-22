@@ -53,7 +53,7 @@ Cypress.Commands.add('clickOnEntityMenuItem', (entityName: string) => {
 
 declare global {
   namespace Cypress {
-    interface Chainable<Subject> {
+    interface Chainable {
       clickOnLoginItem(): Cypress.Chainable;
       clickOnLogoutItem(): Cypress.Chainable;
       clickOnRegisterItem(): Cypress.Chainable;
