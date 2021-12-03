@@ -16,9 +16,8 @@ import ReportGenerator = require('lighthouse/report/generator/report-generator')
 /**
  * @type {Cypress.PluginConfig}
  */
-module.exports = (on, config) => {
+module.exports = on => {
   // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
   on('before:browser:launch', (browser, launchOptions) => {
     prepareAudit(launchOptions);
     if (browser.name === 'chrome' && browser.isHeadless) {
