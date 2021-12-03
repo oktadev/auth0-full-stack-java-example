@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+import { Button, Table } from 'reactstrap';
 import { byteSize, Translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -84,7 +84,7 @@ export const Album = (props: RouteComponentProps<{ url: string }>) => {
       <h2 id="album-heading" data-cy="AlbumHeading">
         <Translate contentKey="flickr2App.album.home.title">Albums</Translate>
         <div className="d-flex justify-content-end">
-          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
+          <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
             <Translate contentKey="flickr2App.album.home.refreshListLabel">Refresh List</Translate>
           </Button>
@@ -130,7 +130,7 @@ export const Album = (props: RouteComponentProps<{ url: string }>) => {
                   <td>{album.description}</td>
                   <td>{album.created ? <TextFormat type="date" value={album.created} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>{album.user ? album.user.login : ''}</td>
-                  <td className="text-right">
+                  <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${album.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                         <FontAwesomeIcon icon="eye" />{' '}
@@ -178,10 +178,10 @@ export const Album = (props: RouteComponentProps<{ url: string }>) => {
       </div>
       {totalItems ? (
         <div className={albumList && albumList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
+          <div className="justify-content-center d-flex">
             <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-          </Row>
-          <Row className="justify-content-center">
+          </div>
+          <div className="justify-content-center d-flex">
             <JhiPagination
               activePage={paginationState.activePage}
               onSelect={handlePagination}
@@ -189,7 +189,7 @@ export const Album = (props: RouteComponentProps<{ url: string }>) => {
               itemsPerPage={paginationState.itemsPerPage}
               totalItems={totalItems}
             />
-          </Row>
+          </div>
         </div>
       ) : (
         ''
