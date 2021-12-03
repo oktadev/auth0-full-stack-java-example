@@ -2,7 +2,7 @@
   "generator-jhipster": {
     "applicationType": "monolith",
     "baseName": "flickr2",
-    "jhipsterVersion": "7.3.1",
+    "jhipsterVersion": "7.4.1",
     "skipClient": false,
     "skipServer": false,
     "skipUserManagement": true,

@@ -8,6 +8,7 @@
   "pluginsFile": "src/test/javascript/cypress/plugins/index.ts",
   "screenshotsFolder": "target/cypress/screenshots",
   "chromeWebSecurity": false,
+  "scrollBehavior": "center",
   "viewportWidth": 1200,
   "viewportHeight": 720,
   "retries": 2
