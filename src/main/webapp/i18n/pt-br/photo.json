@@ -1,0 +1,32 @@
+{
+  "flickr2App": {
+    "photo": {
+      "home": {
+        "title": "Photos",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Photo",
+        "createOrEditLabel": "Criar ou editar Photo",
+        "notFound": "Nenhum Photo encontrado"
+      },
+      "created": "Um novo Photo foi criado com o identificador {{ param }}",
+      "updated": "Um Photo foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Photo foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Photo {{ id }}?"
+      },
+      "detail": {
+        "title": "Photo"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "image": "Image",
+      "height": "Height",
+      "width": "Width",
+      "taken": "Taken",
+      "uploaded": "Uploaded",
+      "album": "Album",
+      "tag": "Tag"
+    }
+  }
+}
