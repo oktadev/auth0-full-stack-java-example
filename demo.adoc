@@ -70,9 +70,9 @@ Why React? Because it's currently the https://trends.google.com/trends/explore?q
 
 == Change Your Identity Provider to Auth0
 
-To switch from Keycloak to Auth0, you only need to override the default properties for Spring Security OAuth.
+To switch from Keycloak to Auth0, you just need to override the default properties for Spring Security OAuth.
 
-. Create a `.auth0.env` file in the root of your project, and fill it with the code below to override the default OIDC settings:
+Create a `.auth0.env` file in the root of your project, and fill it with the code below to override the default OIDC settings:
 
   export SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=https://<your-auth0-domain>/
   export SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=<your-client-id>
@@ -160,7 +160,7 @@ JHipster has Auth0 support built-in, so you can specify your credentials for Cyp
 
   npm run e2e
 
-Shut down the app using kbd:[Ctrl + C]. Let's create some data handling for this Flickr clone!
+Now, let's create some data handling for this Flickr clone!
 
 == Create Entities to allow CRUD on Photos
 
@@ -212,7 +212,7 @@ This process will create Liquibase changelog files, entities, repositories, Spri
 
 == Add Image EXIF Processing in Your Spring Boot API
 
-The `Photo` entity has a few properties that can be calculated by reading the uploaded photo's [EXIF](https://yourphotoadvisor.com/understanding-exif-data-what-it-is-and-what-to-do-with-it/) (Exchangeable Image File Format) data.
+The `Photo` entity has a few properties that can be calculated by reading the uploaded photo's EXIF (Exchangeable Image File Format) data.
 
 . Add a dependency on Drew Noakes' https://github.com/drewnoakes/metadata-extractor[metadata-extractor] library to your `pom.xml`:
 +
@@ -232,7 +232,7 @@ The `Photo` entity has a few properties that can be calculated by reading the up
 public class PhotoResource {
     ...
 
-    public ResponseEntity<Photo> createPhoto(@Valid @RequestBody Photo photo) throws Exception {
+    public ResponseEntity<Photo> createPhoto(@Valid @RequestBody Photo photo) {
         ...
 
         try {
@@ -249,7 +249,7 @@ public class PhotoResource {
 +
 Since you're extracting the information, you can remove the fields from the UI and tests so the user cannot set these values.
 
-. In `src/main/webapp/app/entities/photo/photo-update.tsx`, hide the metadata so users can't edit it. Rather than displaying the `height`, `width`, `taken`, and `uploaded` values, hide them. You can do this by searching for `photo-height`, grabbing the elements (and its following three elements) and adding them to a `metadata` constant just after `defaultValues()` lambda function.
+. In `photo-update.tsx`, hide the metadata so users can't edit it. Rather than displaying the `height`, `width`, `taken`, and `uploaded` values, hide them. You can do this by searching for `photo-height`, grabbing the elements (and its following three elements) and adding them to a `metadata` constant just after `defaultValues()` lambda function.
 +
 [source,jsx]
 ----
@@ -297,7 +297,7 @@ return ( ... );
 </ValidatedField>
 ----
 
-. In `src/test/javascript/cypress/integration/entity/photo.spec.ts`, remove the code that sets the data in these fields:
+. In `photo.spec.ts`, remove the code that sets the data in these fields:
 +
 [source,typescript]
 ----
@@ -307,7 +307,7 @@ cy.get(`[data-cy="taken"]`).type('2021-10-11T16:46').should('have.value', '2021-
 cy.get(`[data-cy="uploaded"]`).type('2021-10-11T15:23').should('have.value', '2021-10-11T15:23');
 ----
 
-. Stop your Maven process, run `source .auth0.env`, then `./mvwn` again.
+. Stop your Maven process, run `source .auth0.env`, then `./mvnw` again.
 
 . If you upload an image you took with your smartphone, the height, width, and taken values should all be populated. If they're not, chances are your image doesn't have the data in it.
 
@@ -321,7 +321,7 @@ You've added metadata extraction to your backend, but your photos still display 
 
   npm i react-photo-gallery@8
 
-. In `src/main/webapp/app/entities/photo/photo.tsx`, add an import for `Gallery`:
+. In `photo.tsx`, add an import for `Gallery`:
 +
 [source,typescript]
 ----
@@ -358,7 +358,7 @@ return (
   source .auth0.env
   ./mvnw
 
-. Log in and navigate to **Entities** > **Photo** in the top nav bar. You will see a plethora of photos loaded by https://www.liquibase.org/[Liquibase] and https://marak.github.io/faker.js/[faker.js]. To make a clean screenshot without this data, modify `src/main/resources/config/application-dev.yml` and remove the "faker" context for Liquibase.
+. Log in and navigate to **Entities** > **Photo** in the top nav bar. You will see a plethora of photos loaded by https://www.liquibase.org/[Liquibase] and https://marak.github.io/faker.js/[faker.js]. To make a clean screenshot without this data, modify `application-dev.yml` and remove the "faker" context for Liquibase.
 +
 [source,yaml]
 ----
@@ -383,7 +383,7 @@ To make a web app into a PWA:
 
 For HTTPS, you can https://letsencrypt.org/docs/certificates-for-localhost/[set up a certificate for localhost] or (even better), deploy it to production! Cloud providers like Heroku will provide you with HTTPS out-of-the-box, but they won't _force_ HTTPS.
 
-. To force HTTPS, open `src/main/java/com/auth0/flickr2/config/SecurityConfiguration.java` and add a rule to force a secure channel when an `X-Forwarded-Proto` header is sent.
+. To force HTTPS, open `SecurityConfiguration.java` and add a rule to force a secure channel when an `X-Forwarded-Proto` header is sent.
 +
 [source,java]
 ----
@@ -423,17 +423,15 @@ protected void configure(HttpSecurity http) throws Exception {
 
 == Deploy Your React + Spring Boot App to Heroku
 
-. To deploy your app to Heroku, you'll first need to install the https://devcenter.heroku.com/articles/heroku-cli[Heroku CLI]. You can confirm it's installed by running `heroku --version`.
-+
-_If you don't have a Heroku account, go to https://www.heroku.com/[heroku.com] and sign up._
+. To deploy your app to Heroku, you'll first need to install the https://devcenter.heroku.com/articles/heroku-cli[Heroku CLI]. You can confirm it's installed by running `heroku --version`. If you don't have a Heroku account, go to https://www.heroku.com/[heroku.com] and sign up.
 
 . Run `heroku login` to log in to your account, then start the deployment process with JHipster:
 
   jhipster heroku
-+
-When prompted to use Okta for OIDC, select `No`.
-+
-You'll be prompted to overwrite `pom.xml`. Type `a` to allow overwriting all files.
+
+. When prompted to use Okta for OIDC, select `No`.
+
+. You'll be prompted to overwrite `pom.xml`. Type `a` to allow overwriting all files.
 
 If you have a stable and fast internet connection, your app should be live on the internet in around six minutes! 😀
 
@@ -449,8 +447,8 @@ If you have a stable and fast internet connection, your app should be live on th
 
 . Log in to your Auth0 account, navigate to your app, and add your Heroku URLs as valid redirect URIs:
 
-  - Allowed Callback URLs: `https://flickr-2.herokuapp.com/login/oauth2/code/oidc`
-  - Allowed Logout URLs: `https://flickr-2.herokuapp.com`
+  - Allowed Callback URLs: `\https://flickr-2.herokuapp.com/login/oauth2/code/oidc`
+  - Allowed Logout URLs: `\https://flickr-2.herokuapp.com`
 
 . After Heroku restarts your app, open it with `heroku open`, and log in.
 
@@ -458,7 +456,7 @@ If you have a stable and fast internet connection, your app should be live on th
 
 . Confirm excellent security headers at https://securityheaders.com[securityheaders.com].
 
-Wahoo! You streamlined full-stack Java development with JHipster. 👏👏👏
+Wahoo! You streamlined your path to full-stack Java development with JHipster!! 👏👏👏
 
 == Get Hip with JHipster!
 
