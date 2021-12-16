@@ -46,8 +46,8 @@ Why React? Because it's currently the https://trends.google.com/trends/explore?q
 
   - name: `flickr2`
   - package: `com.auth0.flickr2`
-  - authentication: `OIDC`
-  - client: `react`
+  - authentication: `OAuth 2.0 / OIDC`
+  - client: `React`
   - bootswatch: `United > Dark`
   - testing: `Cypress`
 
@@ -83,9 +83,9 @@ WARNING: Modify your existing .gitignore file to have *.env so you don't acciden
 
 === Create an OpenID Connect App on Auth0
 
-. Log in to your Auth0 account (or https://auth0.com/signup[sign up] if you don't have an account).
+. https://auth0.com/auth/login[Log in] to your Auth0 account (or https://auth0.com/signup[sign up] if you don't have an account).
 
-. Press the *Create Application* button in the https://manage.auth0.com/#/applications[Applications section]. Use a name like `JHipster Baby!`, select `Regular Web Applications`, and click *Create*.
+. Press the *Create Application* button in the https://manage.auth0.com/#/applications[Applications section]. Use a name like `JHipster Baby!`, select *Regular Web Applications*, and click *Create*.
 
 . Switch to the *Settings* tab and configure your application settings:
 
@@ -94,9 +94,18 @@ WARNING: Modify your existing .gitignore file to have *.env so you don't acciden
 
 . Scroll to the bottom and click *Save Changes*.
 
+. Replace the `$VARIABLES` in `.auth0.env` with the settings from your app:
+
+  export SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=https://$AUTH0_DOMAIN/
+  export SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=$CLIENT_ID
+  export SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=$CLIENT_SECRET
+  export JHIPSTER_SECURITY_OAUTH2_AUDIENCE=https://$AUTH0_DOMAIN/api/v2/
+
 . In the https://manage.auth0.com/#/roles[roles] section, create new roles named `ROLE_ADMIN` and `ROLE_USER`.
 
-. Create a new user account in the https://manage.auth0.com/#/users[users] section. Click on the *Role* tab to assign the roles you just created to the new account.
+. Create a new user account in the https://manage.auth0.com/#/users[users] section.
+
+. Click on the *Role* tab to assign the roles you just created to the new account.
 +
 NOTE: _Make sure your new user's email is verified before attempting to log in!_
 +
@@ -143,7 +152,7 @@ Want to have all these steps automated for you? Vote for https://github.com/auth
   source .auth0.env
   ./mvnw
 
-. _Voilà_ - your full stack app is now using Auth0! Open your favorite browser to `http://localhost:8080`.
+. _Voilà_ - your app is now using Auth0! Open your favorite browser to `http://localhost:8080`.
 
 . Log in and show everything working.
 
@@ -159,6 +168,8 @@ JHipster has Auth0 support built-in, so you can specify your credentials for Cyp
 2. Then, run all the end-to-end tests.
 
   npm run e2e
++
+CAUTION: If you experience authentication errors when running Cypress tests, it's likely because you've violated https://auth0.com/docs/support/policies/rate-limit-policy[Auth0's Rate Limit Policy]. As a workaround, I recommend you use Keycloak for end-to-end tests. You can do this by opening a new terminal window and starting your app there using `./mvnw`. Then, open a second terminal window and run `npm run e2e`.
 
 Now, let's create some data handling for this Flickr clone!
 
@@ -319,7 +330,7 @@ You've added metadata extraction to your backend, but your photos still display 
 
 . Install it using npm:
 
-  npm i react-photo-gallery@8
+  npm i react-photo-gallery@8 --force
 
 . In `photo.tsx`, add an import for `Gallery`:
 +
@@ -358,7 +369,7 @@ return (
   source .auth0.env
   ./mvnw
 
-. Log in and navigate to **Entities** > **Photo** in the top nav bar. You will see a plethora of photos loaded by https://www.liquibase.org/[Liquibase] and https://marak.github.io/faker.js/[faker.js]. To make a clean screenshot without this data, modify `application-dev.yml` and remove the "faker" context for Liquibase.
+. Log in and navigate to **Entities** > **Photo** in the top navbar. You will see a plethora of photos loaded by https://www.liquibase.org/[Liquibase] and https://marak.github.io/faker.js/[faker.js]. To make a clean screenshot without this data, modify `application-dev.yml` and remove the "faker" context for Liquibase.
 +
 [source,yaml]
 ----
@@ -433,26 +444,37 @@ protected void configure(HttpSecurity http) throws Exception {
 
 . You'll be prompted to overwrite `pom.xml`. Type `a` to allow overwriting all files.
 
-If you have a stable and fast internet connection, your app should be live on the internet in around six minutes! 😀
+If you have a stable and fast internet connection, your app should be live on the internet in a few minutes! 😀
+
+TIP: You can watch the https://www.youtube.com/watch?v=OQSNhk5ICTI[Double Rainbow video] if you want a smile while you're waiting.
 
 === Configure for Auth0 and Analyze Your PWA Score with Lighthouse
 
-. To configure your app to work with Auth0 on Heroku, run the following command to set your Auth0 variables on Heroku.
+. To configure your app to work with Auth0 on Heroku, set your environment variables:
+
+  AUTH0_DOMAIN=https://$YOUR_DOMAIN/
+  CLIENT_ID=$YOUR_CLIENT_ID
+  CLIENT_SECRET=$YOUR_CLIENT_SECRET
+  AUDIENCE=https://$AUTH0_DOMAIN/api/v2/
+
+. Run `heroku config:set` to configure Auth0 as your identity provider:
 
   heroku config:set \
-    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI="https://<your-auth0-domain>/" \
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID="<your-client-id>" \
-    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET="<your-client-secret>" \
-    JHIPSTER_SECURITY_OAUTH2_AUDIENCE="https://<your-auth0-domain>/api/v2/"
+    SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=$AUTH0_DOMAIN \
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=$CLIENT_ID \
+    SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=$CLIENT_SECRET \
+    JHIPSTER_SECURITY_OAUTH2_AUDIENCE=$AUDIENCE
++
+Use `heroku logs --tail` to watch your logs.
 
-. Log in to your Auth0 account, navigate to your app, and add your Heroku URLs as valid redirect URIs:
+. After Heroku restarts your app, open it with `heroku open`. Copy its URL.
+
+. https://auth0.com/auth/login[Log in] to your Auth0 account, navigate to your app, and add your Heroku URLs as valid redirect URIs:
 
   - Allowed Callback URLs: `\https://flickr-2.herokuapp.com/login/oauth2/code/oidc`
   - Allowed Logout URLs: `\https://flickr-2.herokuapp.com`
 
-. After Heroku restarts your app, open it with `heroku open`, and log in.
-
-. Test it with https://developers.google.com/web/tools/lighthouse/[Lighthouse] or https://flickr-2.herokuapp.com/[WebPageTest].
+. Test it with https://developers.google.com/web/tools/lighthouse/[Lighthouse] or https://webpagetest.org/[WebPageTest].
 
 . Confirm excellent security headers at https://securityheaders.com[securityheaders.com].
 
