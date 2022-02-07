@@ -50,10 +50,28 @@ Cypress.Commands.add('authenticatedRequest', (data: any) => {
     return cy.request({
       ...data,
       headers: {
+        ...data.headers,
         'X-XSRF-TOKEN': csrfCookie?.value,
       },
     });
   });
+});
+
+Cypress.Commands.add('login', (username: string, password: string) => {
+  cy.session(
+    [username, password],
+    () => {
+      cy.getOauth2Data();
+      cy.get('@oauth2Data').then(oauth2Data => {
+        cy.oauthLogin(oauth2Data, username, password);
+      });
+    },
+    {
+      validate() {
+        cy.authenticatedRequest({ url: '/api/account' }).its('status').should('eq', 200);
+      },
+    }
+  );
 });
 
 declare global {

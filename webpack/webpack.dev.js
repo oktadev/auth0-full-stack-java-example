@@ -50,18 +50,7 @@ module.exports = async options =>
       port: 9060,
       proxy: [
         {
-          context: [
-            '/api',
-            '/services',
-            '/management',
-            '/swagger-resources',
-            '/v2/api-docs',
-            '/v3/api-docs',
-            '/h2-console',
-            '/oauth2',
-            '/login',
-            '/auth',
-          ],
+          context: ['/api', '/services', '/management', '/v3/api-docs', '/h2-console', '/oauth2', '/login', '/auth'],
           target: `http${options.tls ? 's' : ''}://localhost:8080`,
           secure: false,
           changeOrigin: options.tls,
@@ -84,6 +73,7 @@ module.exports = async options =>
           port: 9000,
           proxy: {
             target: `http${options.tls ? 's' : ''}://localhost:9060`,
+            ws: true,
             proxyOptions: {
               changeOrigin: false, //pass the Host header to the backend unchanged  https://github.com/Browsersync/browser-sync/issues/430
             },

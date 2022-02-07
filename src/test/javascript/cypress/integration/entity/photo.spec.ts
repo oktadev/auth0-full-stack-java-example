@@ -14,8 +14,8 @@ import {
 describe('Photo e2e test', () => {
   const photoPageUrl = '/photo';
   const photoPageUrlPattern = new RegExp('/photo(\\?.*)?$');
-  const username = Cypress.env('E2E_USERNAME') ?? 'admin';
-  const password = Cypress.env('E2E_PASSWORD') ?? 'admin';
+  const username = Cypress.env('E2E_USERNAME') ?? 'user';
+  const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const photoSample = {
     title: 'applications Loan Practical',
     image: 'Li4vZmFrZS1kYXRhL2Jsb2IvaGlwc3Rlci5wbmc=',
@@ -25,17 +25,7 @@ describe('Photo e2e test', () => {
   let photo: any;
 
   beforeEach(() => {
-    cy.getOauth2Data();
-    cy.get('@oauth2Data').then(oauth2Data => {
-      cy.oauthLogin(oauth2Data, username, password);
-    });
-    cy.intercept('GET', '/api/photos').as('entitiesRequest');
-    cy.visit('');
-    cy.get(entityItemSelector).should('exist');
-  });
-
-  beforeEach(() => {
-    Cypress.Cookies.preserveOnce('XSRF-TOKEN', 'JSESSIONID');
+    cy.login(username, password);
   });
 
   beforeEach(() => {
@@ -53,11 +43,6 @@ describe('Photo e2e test', () => {
         photo = undefined;
       });
     }
-  });
-
-  afterEach(() => {
-    cy.oauthLogout();
-    cy.clearCache();
   });
 
   it('Photos menu should load Photos page', () => {
@@ -82,11 +67,11 @@ describe('Photo e2e test', () => {
       });
 
       it('should load create Photo page', () => {
-        cy.get(entityCreateButtonSelector).click({ force: true });
+        cy.get(entityCreateButtonSelector).click();
         cy.url().should('match', new RegExp('/photo/new$'));
         cy.getEntityCreateUpdateHeading('Photo');
         cy.get(entityCreateSaveButtonSelector).should('exist');
-        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -111,6 +96,9 @@ describe('Photo e2e test', () => {
             },
             {
               statusCode: 200,
+              headers: {
+                link: '<http://localhost/api/photos?page=0&size=20>; rel="last",<http://localhost/api/photos?page=0&size=20>; rel="first"',
+              },
               body: [photo],
             }
           ).as('entitiesRequestInternal');
@@ -124,7 +112,7 @@ describe('Photo e2e test', () => {
       it('detail button click should load details Photo page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('photo');
-        cy.get(entityDetailsBackButtonSelector).click({ force: true });
+        cy.get(entityDetailsBackButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -135,7 +123,7 @@ describe('Photo e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Photo');
         cy.get(entityCreateSaveButtonSelector).should('exist');
-        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -147,7 +135,7 @@ describe('Photo e2e test', () => {
         cy.get(entityDeleteButtonSelector).last().click();
         cy.wait('@dialogDeleteRequest');
         cy.getEntityDeleteDialogHeading('photo').should('exist');
-        cy.get(entityConfirmDeleteButtonSelector).click({ force: true });
+        cy.get(entityConfirmDeleteButtonSelector).click();
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(204);
         });
@@ -164,7 +152,7 @@ describe('Photo e2e test', () => {
   describe('new Photo page', () => {
     beforeEach(() => {
       cy.visit(`${photoPageUrl}`);
-      cy.get(entityCreateButtonSelector).click({ force: true });
+      cy.get(entityCreateButtonSelector).click();
       cy.getEntityCreateUpdateHeading('Photo');
     });
 

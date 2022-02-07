@@ -14,13 +14,36 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+---
+# Conditionally disable springdoc on missing api-docs profile
+spring:
+  config:
+    activate:
+      on-profile: '!api-docs'
+springdoc:
+  api-docs:
+    enabled: false
+---
 management:
   endpoints:
     web:
       base-path: /management
       exposure:
         include:
-          ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump', 'caches', 'liquibase']
+          [
+            'configprops',
+            'env',
+            'health',
+            'info',
+            'jhimetrics',
+            'jhiopenapigroups',
+            'logfile',
+            'loggers',
+            'prometheus',
+            'threaddump',
+            'caches',
+            'liquibase',
+          ]
   endpoint:
     health:
       show-details: when_authorized
@@ -37,6 +60,8 @@ management:
   info:
     git:
       mode: full
+    env:
+      enabled: true
   health:
     mail:
       enabled: false # When using the MailService, configure an SMTP server and set this to true
@@ -109,6 +134,10 @@ spring:
     basename: i18n/messages
   main:
     allow-bean-definition-overriding: true
+    allow-circular-references: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   task:
     execution:
       thread-name-prefix: flickr-2-task-
@@ -143,6 +172,9 @@ server:
       cookie:
         http-only: true
 
+springdoc:
+  show-actuator: true
+
 # Properties to be exposed on the /info management endpoint
 info:
   # Comma separated list of profiles that will trigger the ribbon to show
@@ -168,8 +200,8 @@ jhipster:
   mail:
     from: flickr2@localhost
   api-docs:
-    default-include-pattern: ${server.servlet.context-path:}/api/.*
-    management-include-pattern: ${server.servlet.context-path:}/management/.*
+    default-include-pattern: ${server.servlet.context-path:}/api/**
+    management-include-pattern: ${server.servlet.context-path:}/management/**
     title: Flickr 2 API
     description: Flickr 2 API documentation
     version: 0.0.1
@@ -185,6 +217,7 @@ jhipster:
       audience:
         - account
         - api://default
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -195,3 +228,25 @@ jhipster:
 # ===================================================================
 
 # application:
+
+---
+logging:
+  level:
+    root: ERROR
+    io.netty: ERROR
+    liquibase: ERROR
+    org.hibernate: ERROR
+    org.springframework: ERROR
+    com.zaxxer.hikari: ERROR
+    org.ehcache: ERROR
+    org.apache.catalina: ERROR
+    org.apache.tomcat: ERROR
+    tech.jhipster.config: ERROR
+    jdk.event.security: ERROR
+    java.net: ERROR
+    sun.net.www: ERROR
+---
+spring:
+  sql:
+    init:
+      mode: never
