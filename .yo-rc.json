@@ -10,7 +10,7 @@
       }
     ],
     "buildTool": "maven",
-    "cacheProvider": "ehcache",
+    "cacheProvider": "no",
     "clientFramework": "react",
     "clientPackageManager": "npm",
     "clientTheme": "united",
@@ -21,7 +21,7 @@
     "devServerPort": 9060,
     "dtoSuffix": "DTO",
     "enableGradleEnterprise": false,
-    "enableHibernateCache": true,
+    "enableHibernateCache": false,
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
     "entities": ["Album", "Photo", "Tag"],

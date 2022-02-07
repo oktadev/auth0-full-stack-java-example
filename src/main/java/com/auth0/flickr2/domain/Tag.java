@@ -6,15 +6,12 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Tag.
  */
 @Entity
 @Table(name = "tag")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Tag implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,7 +28,6 @@ public class Tag implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "album", "tags" }, allowSetters = true)
     private Set<Photo> photos = new HashSet<>();
 

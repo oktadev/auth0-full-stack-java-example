@@ -135,10 +135,6 @@
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
         </dependency>
@@ -169,18 +165,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.cache</groupId>
-            <artifactId>cache-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jcache</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -408,44 +392,6 @@
             <plugin>
                 <groupId>org.gaul</groupId>
                 <artifactId>modernizer-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.experimental</groupId>
-                <artifactId>spring-aot-maven-plugin</artifactId>
-                <version>${spring-native.version}</version>
-                <executions>
-                    <execution>
-                        <id>test-generate</id>
-                        <goals>
-                            <goal>test-generate</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.hibernate.orm.tooling</groupId>
-                <artifactId>hibernate-enhance-maven-plugin</artifactId>
-                <version>${hibernate.version}</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <failOnError>true</failOnError>
-                            <enableLazyInitialization>true</enableLazyInitialization>
-                            <enableDirtyTracking>true</enableDirtyTracking>
-                            <enableAssociationManagement>true</enableAssociationManagement>
-                            <enableExtendedEnhancement>false</enableExtendedEnhancement>
-                        </configuration>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
         </plugins>
@@ -1345,6 +1291,44 @@
             </dependencies>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.hibernate.orm.tooling</groupId>
+                        <artifactId>hibernate-enhance-maven-plugin</artifactId>
+                        <version>${hibernate.version}</version>
+                        <executions>
+                            <execution>
+                                <configuration>
+                                    <failOnError>true</failOnError>
+                                    <enableLazyInitialization>true</enableLazyInitialization>
+                                    <enableDirtyTracking>true</enableDirtyTracking>
+                                    <enableAssociationManagement>true</enableAssociationManagement>
+                                    <enableExtendedEnhancement>false</enableExtendedEnhancement>
+                                </configuration>
+                                <goals>
+                                    <goal>enhance</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.experimental</groupId>
+                        <artifactId>spring-aot-maven-plugin</artifactId>
+                        <version>${spring-native.version}</version>
+                        <executions>
+                            <execution>
+                                <id>test-generate</id>
+                                <goals>
+                                    <goal>test-generate</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>generate</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>

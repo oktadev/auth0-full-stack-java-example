@@ -16,7 +16,7 @@ describe('/admin', () => {
     cy.visit('');
   });
 
-  describe('/metrics', () => {
+  describe.skip('/metrics', () => {
     it('should load the page', () => {
       cy.clickOnAdminMenuItem('metrics');
       cy.get(metricsPageHeadingSelector).should('be.visible');
@@ -30,14 +30,14 @@ describe('/admin', () => {
     });
   });
 
-  describe('/logs', () => {
+  describe.skip('/logs', () => {
     it('should load the page', () => {
       cy.clickOnAdminMenuItem('logs');
       cy.get(logsPageHeadingSelector).should('be.visible');
     });
   });
 
-  describe('/configuration', () => {
+  describe.skip('/configuration', () => {
     it('should load the page', () => {
       cy.clickOnAdminMenuItem('configuration');
       cy.get(configurationPageHeadingSelector).should('be.visible');
