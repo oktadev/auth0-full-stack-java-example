@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.nativex.hint.TypeAccess;
+import org.springframework.nativex.hint.TypeHint;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
@@ -27,8 +29,13 @@ import tech.jhipster.config.JHipsterConstants;
         liquibase.change.core.LoadDataColumnConfig.class,
         tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
         org.hibernate.type.TextType.class,
+        java.util.HashSet.class,
+        com.drew.metadata.exif.ExifIFD0Directory.class,
+        com.drew.metadata.exif.ExifSubIFDDirectory.class,
+        java.nio.charset.Charset.class,
     }
 )
+@TypeHint(types = com.drew.lang.Charsets.class, access = { TypeAccess.PUBLIC_FIELDS, TypeAccess.DECLARED_CONSTRUCTORS })
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
 public class Flickr2App {
