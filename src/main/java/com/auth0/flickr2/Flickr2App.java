@@ -1,6 +1,7 @@
 package com.auth0.flickr2;
 
 import com.auth0.flickr2.config.ApplicationProperties;
+import java.lang.annotation.Native;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -15,12 +16,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
-@org.springframework.nativex.hint.TypeHint(
+@TypeHint(
     types = {
         org.HdrHistogram.Histogram.class,
         org.HdrHistogram.ConcurrentHistogram.class,
@@ -32,10 +34,17 @@ import tech.jhipster.config.JHipsterConstants;
         java.util.HashSet.class,
         com.drew.metadata.exif.ExifIFD0Directory.class,
         com.drew.metadata.exif.ExifSubIFDDirectory.class,
-        java.nio.charset.Charset.class,
+        com.drew.metadata.exif.makernotes.AppleMakernoteDirectory.class,
+        com.drew.metadata.exif.GpsDirectory.class,
     }
 )
-@TypeHint(types = com.drew.lang.Charsets.class, access = { TypeAccess.PUBLIC_FIELDS, TypeAccess.DECLARED_CONSTRUCTORS })
+@NativeHint(options = "-H:+AddAllCharsets")
+/*
+The NativeHint above solves this exception:
+  Caused by: java.nio.charset.UnsupportedCharsetException: Cp1252
+	at java.nio.charset.Charset.forName(Charset.java:528) ~[native-executable:na]
+	at com.drew.lang.Charsets.<clinit>(Charsets.java:40) ~[native-executable:2.16.0]
+ */
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
 public class Flickr2App {
