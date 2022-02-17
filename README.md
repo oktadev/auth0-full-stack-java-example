@@ -1,186 +1,66 @@
-# flickr2
+# Full Stack Java Example with JHipster (React + Spring Boot) 🤓
 
-This application was generated using JHipster 7.6.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.6.0](https://www.jhipster.tech/documentation-archive/v7.6.0).
+This example app shows you how to create a slick-looking, full-stack, secure application using React, Spring Boot, and JHipster.
 
-## Project Structure
+Please read [Full Stack Java with React, Spring Boot, and JHipster][blog] to see how this app was created.
 
-Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.
+**Prerequisites:**
 
-In the project root, JHipster generates configuration files for tools like git, prettier, eslint, husk, and others that are well known and you can find references in the web.
+- [Node.js 14+](https://nodejs.org/)
+- [Java 11+](https://sdkman.io)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- An [Auth0 Account](https://auth0.com/signup)
 
-`/src/*` structure follows default Java structure.
+> [Auth0](https://auth0.com) is an easy to implement, adaptable authentication and authorization platform. Basically, we make your login box awesome.
 
-- `.yo-rc.json` - Yeoman configuration file
-  JHipster configuration is stored in this file at `generator-jhipster` key. You may find `generator-jhipster-*` for specific blueprints configuration.
-- `.yo-resolve` (optional) - Yeoman conflict resolver
-  Allows to use a specific action when conflicts are found skipping prompts for files that matches a pattern. Each line should match `[pattern] [action]` with pattern been a [Minimatch](https://github.com/isaacs/minimatch#minimatch) pattern and action been one of skip (default if ommited) or force. Lines starting with `#` are considered comments and are ignored.
-- `.jhipster/*.json` - JHipster entity configuration files
+- [Getting Started](#getting-started)
+- [Links](#links)
+- [Help](#help)
+- [License](#license)
 
-- `npmw` - wrapper to use locally installed npm.
-  JHipster installs Node and npm locally using the build tool by default. This wrapper makes sure npm is installed locally and uses it avoiding some differences different versions can cause. By using `./npmw` instead of the traditional `npm` you can configure a Node-less environment to develop or test your application.
-- `/src/main/docker` - Docker configurations for the application and services that the application depends on
+## Getting Started
 
-## Development
-
-Before you can build this project, you must install and configure the following dependencies on your machine:
-
-1. [Node.js][]: We use Node to run a development web server and build the project.
-   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
-
-After installing Node, you should be able to run the following command to install development tools.
-You will only need to run this command when dependencies change in [package.json](package.json).
+To install this example, clone it.
 
 ```
-npm install
+git clone https://github.com/oktadev/auth0-full-stack-java-example.git
+cd auth0-full-stack-java-example
 ```
 
-We use npm scripts and [Webpack][] as our build system.
-
-Run the following commands in two separate terminals to create a blissful development experience where your browser
-auto-refreshes when files change on your hard drive.
-
-```
-./mvnw
-npm start
-```
-
-Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
-Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
-
-The `npm run` command will list all of the scripts available to run for this project.
-
-### PWA Support
-
-JHipster ships with PWA (Progressive Web App) support, and it's turned off by default. One of the main components of a PWA is a service worker.
-
-The service worker initialization code is commented out by default. To enable it, uncomment the following code in `src/main/webapp/index.html`:
-
-```html
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').then(function () {
-      console.log('Service Worker Registered');
-    });
-  }
-</script>
-```
-
-Note: [Workbox](https://developers.google.com/web/tools/workbox/) powers JHipster's service worker. It dynamically generates the `service-worker.js` file.
-
-### Managing dependencies
-
-For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
-
-```
-npm install --save --save-exact leaflet
-```
-
-To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
-
-```
-npm install --save-dev --save-exact @types/leaflet
-```
-
-Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
-Note: There are still a few other things remaining to do for Leaflet that we won't detail here.
-
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
-
-### JHipster Control Center
-
-JHipster Control Center can help you manage and control your application(s). You can start a local control center server (accessible on http://localhost:7419) with:
-
-```
-docker-compose -f src/main/docker/jhipster-control-center.yml up
-```
-
-### OAuth 2.0 / OpenID Connect
-
-Congratulations! You've selected an excellent way to secure your JHipster application. If you're not sure what OAuth and OpenID Connect (OIDC) are, please see [What the Heck is OAuth?](https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth)
-
-To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up and running. The JHipster Team has created a Docker container for you that has the default users and roles. Start Keycloak using the following command.
-
-```
-docker-compose -f src/main/docker/keycloak.yml up
-```
-
-The security settings in `src/main/resources/config/application.yml` are configured for this image.
-
-```yaml
-spring:
-  ...
-  security:
-    oauth2:
-      client:
-        provider:
-          oidc:
-            issuer-uri: http://localhost:9080/auth/realms/jhipster
-        registration:
-          oidc:
-            client-id: web_app
-            client-secret: web_app
-            scope: openid,profile,email
-```
-
-### Okta
-
-If you'd like to use Okta instead of Keycloak, it's pretty quick using the [Okta CLI](https://cli.okta.com/). After you've installed it, run:
+Create a `.auth0.env` file in the root of the project, and fill it with the code below to override the default OIDC settings:
 
 ```shell
-okta register
+export SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=https://<your-auth0-domain>/
+export SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=<your-client-id>
+export SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=<your-client-secret>
+export JHIPSTER_SECURITY_OAUTH2_AUDIENCE=https://<your-auth0-domain>/api/v2/
 ```
 
-Then, in your JHipster app's directory, run `okta apps create` and select **JHipster**. This will set up an Okta app for you, create `ROLE_ADMIN` and `ROLE_USER` groups, create a `.okta.env` file with your Okta settings, and configure a `groups` claim in your ID token.
+You'll need to create a new web application in Auth0 and fill in the `<...>` placeholders before this works.
 
-Run `source .okta.env` and start your app with Maven or Gradle. You should be able to sign in with the credentials you registered with.
+### Create an OpenID Connect App on Auth0
 
-If you're on Windows, you should install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) so the `source` command will work.
+Log in to your Auth0 account (or [sign up](https://auth0.com/signup) if you don't have an account). You should have a unique domain like `dev-xxx.eu.auth0.com`.
 
-If you'd like to configure things manually through the Okta developer console, see the instructions below.
+Press the **Create Application** button in [Applications section](https://manage.auth0.com/#/applications). Use a name like `JHipster Baby!`, select `Regular Web Applications`, and click **Create**.
 
-First, you'll need to create a free developer account at <https://developer.okta.com/signup/>. After doing so, you'll get your own Okta domain, that has a name like `https://dev-123456.okta.com`.
+Switch to the **Settings** tab and configure your application settings:
 
-Modify `src/main/resources/config/application.yml` to use your Okta settings.
+- Allowed Callback URLs: `http://localhost:8080/login/oauth2/code/oidc`
+- Allowed Logout URLs: `http://localhost:8080/`
 
-```yaml
-spring:
-  ...
-  security:
-    oauth2:
-      client:
-        provider:
-          oidc:
-            issuer-uri: https://{yourOktaDomain}/oauth2/default
-        registration:
-          oidc:
-            client-id: {clientId}
-            client-secret: {clientSecret}
-security:
-```
+Scroll to the bottom and click **Save Changes**.
 
-Create an OIDC App in Okta to get a `{clientId}` and `{clientSecret}`. To do this, log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Web** and click the **Next** button. Give the app a name you’ll remember, specify `http://localhost:8080` as a Base URI, and `http://localhost:8080/login/oauth2/code/oidc` as a Login Redirect URI. Click **Done**, then Edit and add `http://localhost:8080` as a Logout redirect URI. Copy and paste the client ID and secret into your `application.yml` file.
+In the [roles](https://manage.auth0.com/#/roles) section, create new roles named `ROLE_ADMIN` and `ROLE_USER`.
 
-Create a `ROLE_ADMIN` and `ROLE_USER` group and add users into them. Modify e2e tests to use this account when running integration tests. You'll need to change credentials in `src/test/javascript/e2e/account/account.spec.ts` and `src/test/javascript/e2e/admin/administration.spec.ts`.
+Create a new user account in the [users](https://manage.auth0.com/#/users) section. Click on the **Role** tab to assign the roles you just created to the new account.
 
-Navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "groups", and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
+_Make sure your new user's email is verified before attempting to log in!_
 
-After making these changes, you should be good to go! If you have any issues, please post them to [Stack Overflow](https://stackoverflow.com/questions/tagged/jhipster). Make sure to tag your question with "jhipster" and "okta".
+Next, head to **Auth Pipeline** > **Rules** > **Create**. Select the `Empty rule` template. Provide a meaningful name like `Group claims` and replace the Script content with the following.
 
-### Auth0
-
-If you'd like to use [Auth0](https://auth0.com/) instead of Keycloak, follow the configuration steps below:
-
-- Create a free developer account at <https://auth0.com/signup>. After successful sign-up, your account will be associated with a unique domain like `dev-xxx.us.auth0.com`
-- Create a new application of type `Regular Web Applications`. Switch to the `Settings` tab, and configure your application settings like:
-  - Allowed Callback URLs: `http://localhost:8080/login/oauth2/code/oidc`
-  - Allowed Logout URLs: `http://localhost:8080/`
-- Navigate to **User Management** > **Roles** and create new roles named `ROLE_ADMIN`, and `ROLE_USER`.
-- Navigate to **User Management** > **Users** and create a new user account. Click on the **Role** tab to assign roles to the newly created user account.
-- Navigate to **Auth Pipeline** > **Rules** and create a new Rule. Choose `Empty rule` template. Provide a meaningful name like `JHipster claims` and replace `Script` content with the following and Save.
-
-```javascript
-function (user, context, callback) {
+```js
+function(user, context, callback) {
   user.preferred_username = user.email;
   const roles = (context.authorization || {}).roles;
 
@@ -202,172 +82,37 @@ function (user, context, callback) {
 }
 ```
 
-- In your `JHipster` application, modify `src/main/resources/config/application.yml` to use your Auth0 application settings:
+This code is adding the user's roles to a custom claim (prefixed with `https://www.jhipster.tech/roles`). This claim is mapped to Spring Security authorities in `SecurityUtils.java`.
 
-```yaml
-spring:
-  ...
-  security:
-    oauth2:
-      client:
-        provider:
-          oidc:
-            # make sure to include the ending slash!
-            issuer-uri: https://{your-auth0-domain}/
-        registration:
-          oidc:
-            client-id: {clientId}
-            client-secret: {clientSecret}
-            scope: openid,profile,email
-jhipster:
-  ...
-  security:
-    oauth2:
-      audience:
-        - https://{your-auth0-domain}/api/v2/
+Click **Save changes** to continue.
+
+**NOTE**: Want to have all these steps automated for you? Vote for [this issue](https://github.com/auth0/auth0-cli/issues/351) in the Auth0 CLI project.
+
+### Run Your JHipster App with Auth0
+
+Set your Auth0 properties in `.auth0.env`, and start the app.
+
+```shell
+source .auth0.env
+./mvnw
 ```
 
-Before running Cypress tests, specify Auth0 user credentials by overriding the `CYPRESS_E2E_USERNAME` and `CYPRESS_E2E_PASSWORD` environment variables.
+_Voilà_ - your full stack app is using Auth0! Open your favorite browser to `http://localhost:8080` and sign-in.
 
-```
-export CYPRESS_E2E_USERNAME="<your-username>"
-export CYPRESS_E2E_PASSWORD="<your-password>"
-```
+## Links
 
-See Cypress' documentation for setting OS [environment variables](https://docs.cypress.io/guides/guides/environment-variables#Setting) to learn more.
+This example uses the following open source libraries:
 
-**Auth0 requires a user to provide authorization consent on the first login.** Consent flow is currently not handled in the Cypress test suite. To mitigate the issue, you can use a user account that has already granted consent to authorize application access via interactive login.
+- [JHipster](https://www.jhipster.tech)
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring Security](https://spring.io/projects/spring-security)
 
-## Building for production
+## Help
 
-### Packaging as jar
+Please post any questions as comments on the [blog post][blog].
 
-To build the final jar and optimize the flickr2 application for production, run:
+## License
 
-```
-./mvnw -Pprod clean verify
-```
+Apache 2.0, see [LICENSE](LICENSE).
 
-This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
-To ensure everything worked, run:
-
-```
-java -jar target/*.jar
-```
-
-Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
-
-Refer to [Using JHipster in production][] for more details.
-
-### Packaging as war
-
-To package your application as a war in order to deploy it to an application server, run:
-
-```
-./mvnw -Pprod,war clean verify
-```
-
-## Testing
-
-To launch your application's tests, run:
-
-```
-./mvnw verify
-```
-
-### Client tests
-
-Unit tests are run by [Jest][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
-
-```
-npm test
-```
-
-UI end-to-end tests are powered by [Cypress][]. They're located in [src/test/javascript/cypress](src/test/javascript/cypress)
-and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`npm run e2e`) in a second one.
-
-#### Lighthouse audits
-
-You can execute automated [lighthouse audits][https://developers.google.com/web/tools/lighthouse/] with [cypress audits][https://github.com/mfrachet/cypress-audit] by running `npm run e2e:cypress:audits`.
-You should only run the audits when your application is packaged with the production profile.
-The lighthouse report is created in `target/cypress/lhreport.html`
-
-For more information, refer to the [Running tests page][].
-
-### Code quality
-
-Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
-
-```
-docker-compose -f src/main/docker/sonar.yml up -d
-```
-
-Note: we have turned off authentication in [src/main/docker/sonar.yml](src/main/docker/sonar.yml) for out of the box experience while trying out SonarQube, for real use cases turn it back on.
-
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
-
-Then, run a Sonar analysis:
-
-```
-./mvnw -Pprod clean verify sonar:sonar
-```
-
-If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
-
-```
-./mvnw initialize sonar:sonar
-```
-
-For more information, refer to the [Code quality page][].
-
-## Using Docker to simplify development (optional)
-
-You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
-
-For example, to start a postgresql database in a docker container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml up -d
-```
-
-To stop it and remove the container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml down
-```
-
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
-
-```
-./mvnw -Pprod verify jib:dockerBuild
-```
-
-Then run:
-
-```
-docker-compose -f src/main/docker/app.yml up -d
-```
-
-For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
-
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 7.6.0 archive]: https://www.jhipster.tech/documentation-archive/v7.6.0
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v7.6.0/development/
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v7.6.0/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v7.6.0/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v7.6.0/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v7.6.0/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v7.6.0/setting-up-ci/
-[node.js]: https://nodejs.org/
-[npm]: https://www.npmjs.com/
-[webpack]: https://webpack.github.io/
-[browsersync]: https://www.browsersync.io/
-[jest]: https://facebook.github.io/jest/
-[cypress]: https://www.cypress.io/
-[leaflet]: https://leafletjs.com/
-[definitelytyped]: https://definitelytyped.org/
+[blog]: https://auth0.com/blog/full-stack-java-with-react-spring-boot-and-jhipster/
