@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.nativex.hint.NativeHint;
+import org.springframework.nativex.hint.ResourceHint;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
@@ -35,7 +36,7 @@ import tech.jhipster.config.JHipsterConstants;
         com.drew.metadata.exif.GpsDirectory.class,
     }
 )
-@NativeHint(options = "-H:+AddAllCharsets")
+@NativeHint(options = "-H:+AddAllCharsets", resources = @ResourceHint(patterns = "banner.txt"))
 /*
 The NativeHint above solves this exception:
   Caused by: java.nio.charset.UnsupportedCharsetException: Cp1252
