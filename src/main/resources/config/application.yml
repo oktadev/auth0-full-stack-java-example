@@ -237,7 +237,6 @@ logging:
     org.hibernate: ERROR
     org.springframework: ERROR
     com.zaxxer.hikari: ERROR
-    org.ehcache: ERROR
     org.apache.catalina: ERROR
     org.apache.tomcat: ERROR
     tech.jhipster.config: ERROR

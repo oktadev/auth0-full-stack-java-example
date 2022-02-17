@@ -1,7 +1,6 @@
 package com.auth0.flickr2;
 
 import com.auth0.flickr2.config.ApplicationProperties;
-import java.lang.annotation.Native;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -17,21 +16,19 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.nativex.hint.NativeHint;
-import org.springframework.nativex.hint.TypeAccess;
-import org.springframework.nativex.hint.TypeHint;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
-@TypeHint(
+@org.springframework.nativex.hint.TypeHint(
     types = {
         org.HdrHistogram.Histogram.class,
         org.HdrHistogram.ConcurrentHistogram.class,
+        java.util.HashSet.class,
         liquibase.configuration.LiquibaseConfiguration.class,
         com.zaxxer.hikari.HikariDataSource.class,
         liquibase.change.core.LoadDataColumnConfig.class,
-        tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
         org.hibernate.type.TextType.class,
-        java.util.HashSet.class,
+        tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
         com.drew.metadata.exif.ExifIFD0Directory.class,
         com.drew.metadata.exif.ExifSubIFDDirectory.class,
         com.drew.metadata.exif.makernotes.AppleMakernoteDirectory.class,
