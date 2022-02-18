@@ -142,5 +142,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_paths: '["target/flickr2-${{ runner.os }}*", "target/*.jar"]'
+          asset_paths: '["target/flickr2-${{ runner.os }}*"]'
 
