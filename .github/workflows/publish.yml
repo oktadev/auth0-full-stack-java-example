@@ -50,7 +50,7 @@ jobs:
         swap-size-gb: 10
 
     - name: Build native images
-      run: mkdir target && echo "fake image" > target/native-executable #./mvnw -B -ntp package -Pnative,prod -DskipTests
+      run: ./mvnw -B -ntp package -Pprod -DskipTests #./mvnw -B -ntp package -Pnative,prod -DskipTests
 
     - name: Archive binary
       uses: actions/upload-artifact@v2
@@ -123,7 +123,7 @@ jobs:
       - name: Build native images
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-          md target && echo "fake image" > target/native-executable.exe # mvnw -B -ntp package -Pnative,prod -DskipTests
+          md target && echo "fake image" > target/native-executable.exe # mvnw -B -ntp package -Pprod -DskipTests
         shell: cmd
 
       - name: Archive binary
