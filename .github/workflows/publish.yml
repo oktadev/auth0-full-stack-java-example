@@ -17,7 +17,8 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
-
+      with:
+        ref: 'spring-native'
     - name: Set up GraalVM (Java ${{ env.java_version }})
       uses: graalvm/setup-graalvm@v1
       with:
