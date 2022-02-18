@@ -13,6 +13,7 @@ jobs:
   build:
     name: GraalVM - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -27,8 +28,23 @@ jobs:
         java-version: '${{ env.java_version }}'
         components: 'native-image'
 
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
+    - name: Cache npm dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.npm
+          ~/.cache/Cypress/
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package*.json') }}
+
     - name: Build native images
-      run: ./mvnw package -Pnative,prod -DskipTests
+      run: ./mvnw -B -ntp package -Pnative,prod -DskipTests
 
     - name: Archive binary
       uses: actions/upload-artifact@v2
@@ -50,6 +66,7 @@ jobs:
   build-windows:
     name: GraalVM - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
