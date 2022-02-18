@@ -118,13 +118,13 @@ jobs:
 
       - name: Maven resolve
         run: |
-          mvnw -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V dependency:resolve-plugins
+          mvnw -B dependency:resolve-plugins
         shell: cmd
 
       - name: Build native images
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-          mvnw -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -ntp package -Pnative,prod -DskipTests
+          mvnw -B -ntp package -Pnative,prod -DskipTests
         shell: cmd
 
       - name: Archive binary
