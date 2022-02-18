@@ -31,9 +31,9 @@ jobs:
     - name: Cache Maven dependencies
       uses: actions/cache@v2
       with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven
 
     - name: Cache npm dependencies
       uses: actions/cache@v2
@@ -85,6 +85,21 @@ jobs:
           java-version: '${{ env.java_version }}'
           components: 'native-image'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/Cypress/
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package*.json') }}
+
       - name: Configure pagefile
         uses: al-cheb/configure-pagefile-action@v1.2
 
@@ -103,7 +118,7 @@ jobs:
       - name: Build native images
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-          mvnw -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V package -Pnative,prod -DskipTests -e
+          mvnw -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -ntp package -Pnative,prod -DskipTests
         shell: cmd
 
       - name: Archive binary
@@ -114,10 +129,7 @@ jobs:
 
       - name: Get release version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: List directory
-        run: |
-          cd target
-          dir
+
       - name: Rename binary
         run: move target\native-executable.exe target\flickr2-${{ env.RUNNER_OS }}-${{ env.RELEASE_VERSION }}-x86_64.exe
       - name: Upload release
