@@ -43,6 +43,11 @@ jobs:
           ~/.cache/Cypress/
         key: ${{ runner.os }}-npm-${{ hashFiles('**/package*.json') }}
 
+    - name: Set up swap space
+      uses: pierotofy/set-swap-space@v1
+      with:
+        swap-size-gb: 10
+
     - name: Build native images
       run: ./mvnw -B -ntp package -Pnative,prod -DskipTests
 
@@ -103,7 +108,7 @@ jobs:
       - name: Configure pagefile
         uses: al-cheb/configure-pagefile-action@v1.2
 
-      - name: Setup pagefile
+      - name: Set up pagefile
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
       - name: mvnw --version
