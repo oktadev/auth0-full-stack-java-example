@@ -121,9 +121,7 @@ jobs:
         shell: cmd
 
       - name: Build native images
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-          md target && echo "fake image" > target/native-executable.exe # mvnw -B -ntp package -Pprod -DskipTests
+        run: mvnw -B -ntp package -Pprod -DskipTests
         shell: cmd
 
       - name: Archive binary
