@@ -50,7 +50,7 @@ jobs:
         swap-size-gb: 10
 
     - name: Build native images
-      run: ./mvnw -B -ntp package -Pnative,prod -DskipTests
+      run: echo "fake image" > target/native-executable #./mvnw -B -ntp package -Pnative,prod -DskipTests
 
     - name: Archive binary
       uses: actions/upload-artifact@v2
@@ -67,7 +67,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        asset_paths: '["target/flickr2-${{ matrix.os }}*"]'
+        asset_paths: '["target/flickr2-${{ matrix.os }}*", "target/*.jar"]'
 
   build-windows:
     name: GraalVM - ${{ matrix.os }}
@@ -117,14 +117,13 @@ jobs:
         shell: cmd
 
       - name: Maven resolve
-        run: |
-          mvnw -B -ntp dependency:resolve-plugins
+        run: mvnw -B -ntp dependency:resolve-plugins
         shell: cmd
 
       - name: Build native images
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-          mvnw -B -ntp package -Pnative,prod -DskipTests
+          echo "fake image" > target/native-executable.exe # mvnw -B -ntp package -Pnative,prod -DskipTests
         shell: cmd
 
       - name: Archive binary
@@ -143,5 +142,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_paths: '["target/flickr2-${{ matrix.os }}*"]'
+          asset_paths: '["target/flickr2-${{ matrix.os }}*", "target/*.jar"]'
 
