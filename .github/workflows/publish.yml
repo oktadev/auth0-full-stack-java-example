@@ -60,9 +60,9 @@ jobs:
 
     - name: Get release version
       run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-    - name: Rename binary
-      run: mv target/native-executable target/flickr2-${{ runner.os }}-${{ env.RELEASE_VERSION }}-x86_64
-    - name: Upload release
+    #- name: Rename binary
+    #  run: mv target/native-executable target/flickr2-${{ runner.os }}-${{ env.RELEASE_VERSION }}-x86_64
+    #- name: Upload release
       uses: alexellis/upload-assets@0.3.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -133,8 +133,8 @@ jobs:
       - name: Get release version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - name: Rename binary
-        run: move target/native-executable.exe target/flickr2-${{ runner.os }}-${{ env.RELEASE_VERSION }}-x86_64.exe
+      #- name: Rename binary
+      #  run: move target/native-executable.exe target/flickr2-${{ runner.os }}-${{ env.RELEASE_VERSION }}-x86_64.exe
       - name: Upload release
         uses: alexellis/upload-assets@0.3.0
         env:
