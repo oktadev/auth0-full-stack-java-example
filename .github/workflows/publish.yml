@@ -45,9 +45,7 @@ jobs:
 
     - name: Set up swap space
       if: runner.os == 'Linux'
-      uses: pierotofy/set-swap-space@v1.0
-      with:
-        swap-size-gb: 10
+      run: sudo sysctl vm.swappiness=10
 
     - name: Build native images
       run: ./mvnw -B -ntp package -Pnative,prod -DskipTests
