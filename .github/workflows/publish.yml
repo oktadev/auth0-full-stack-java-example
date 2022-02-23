@@ -114,15 +114,15 @@ jobs:
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
       - name: mvnw --version
         run: mvnw --version
-        shell: cmd
+        shell: pwsh
 
       - name: Maven resolve
         run: mvnw -B -ntp dependency:resolve-plugins
-        shell: cmd
+        shell: pwsh
 
       - name: Build native images
         run: mvnw -B -ntp package -Pnative,prod -DskipTests
-        shell: cmd
+        shell: pwsh
 
       - name: Archive binary
         uses: actions/upload-artifact@v2
