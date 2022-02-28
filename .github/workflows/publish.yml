@@ -122,8 +122,8 @@ jobs:
 
       - name: Build native images
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-          mvnw -B -ntp package -Pnative,prod -DskipTests
+          mklink /J C:\repo C:\Users\runneradmin\.m2\repository
+          mvnw -B -ntp package -Pnative,prod -DskipTests -Dmaven.repo.local=C:\repo
         shell: cmd
 
       - name: Archive binary
