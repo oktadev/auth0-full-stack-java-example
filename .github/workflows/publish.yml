@@ -110,7 +110,6 @@ jobs:
         uses: al-cheb/configure-pagefile-action@v1.2
         with:
           minimum-size: 10
-          maximum-size: 12
 
       - name: Set up pagefile
         run: |
