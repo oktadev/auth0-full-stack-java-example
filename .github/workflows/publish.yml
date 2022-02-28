@@ -122,8 +122,8 @@ jobs:
 
       - name: Build native images
         run: |
-          mklink /J C:\repo C:\Users\runneradmin\.m2\repository
-          mvnw -B -ntp package -Pnative,prod -DskipTests -Dmaven.repo.local=C:\repo
+          mklink /J C:\r C:\Users\runneradmin\.m2\repository
+          mvnw -B -ntp package -Pnative,prod -DskipTests -Dmaven.repo.local=C:\r
         shell: cmd
 
       - name: Archive binary
