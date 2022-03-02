@@ -6,7 +6,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-native",
-        "version": "0.0.0"
+        "version": "1.0.0"
       }
     ],
     "buildTool": "maven",
@@ -38,7 +38,7 @@
     "otherModules": [
       {
         "name": "generator-jhipster-native",
-        "version": "0.0.0"
+        "version": "1.0.0"
       }
     ],
     "packageName": "com.auth0.flickr2",
@@ -52,7 +52,6 @@
     "skipCheckLengthOfIdentifier": false,
     "skipClient": false,
     "skipFakeData": false,
-    "skipJhipsterDependencies": true,
     "skipServer": false,
     "skipUserManagement": true,
     "testFrameworks": ["cypress"],
