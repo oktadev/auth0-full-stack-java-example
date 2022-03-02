@@ -31,11 +31,11 @@ jobs:
       - name: Package application
         run: npm run java:jar:prod
       - name: 'E2E: Package'
-        run: npm run ci:e2e:package
+        run: npm run java:$npm_package_config_packaging:$npm_package_config_default_environment -- -Pe2e -Denforcer.skip=true # npm run ci:e2e:package
       - name: 'E2E: Prepare'
         run: npm run ci:e2e:prepare
       - name: 'E2E: Run'
-        run: npm run ci:e2e:run
+        run: concurrently -k -s first \"npm run ci:e2e:server:start\" \"npm run e2e:headless\" # npm run ci:e2e:run
         env:
           CYPRESS_ENABLE_RECORD: false
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
