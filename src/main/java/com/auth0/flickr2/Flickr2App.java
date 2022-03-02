@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
-import org.springframework.nativex.hint.ResourceHint;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
@@ -31,17 +30,12 @@ import tech.jhipster.config.JHipsterConstants;
         tech.jhipster.domain.util.FixedPostgreSQL10Dialect.class,
         com.drew.metadata.exif.ExifIFD0Directory.class,
         com.drew.metadata.exif.ExifSubIFDDirectory.class,
+        com.drew.metadata.exif.ExifThumbnailDirectory.class,
         com.drew.metadata.exif.makernotes.AppleMakernoteDirectory.class,
         com.drew.metadata.exif.GpsDirectory.class,
     }
 )
-@org.springframework.nativex.hint.NativeHint(options = "-H:+AddAllCharsets", resources = @ResourceHint(patterns = "banner.txt"))
-/*
-The NativeHint above solves this exception:
-  Caused by: java.nio.charset.UnsupportedCharsetException: Cp1252
-	at java.nio.charset.Charset.forName(Charset.java:528) ~[native-executable:na]
-	at com.drew.lang.Charsets.<clinit>(Charsets.java:40) ~[native-executable:2.16.0]
- */
+@org.springframework.nativex.hint.NativeHint(options = "-H:+AddAllCharsets")
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
 public class Flickr2App {

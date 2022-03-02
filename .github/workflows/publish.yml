@@ -7,18 +7,20 @@ on:
 env:
   graalvm_version: '22.0.0.2'
   java_version: '17'
+  branch: 'spring-native'
 
 jobs:
   build:
     name: GraalVM - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: 'spring-native'
+        ref: '${{ env.branch }}'
     - name: Set up GraalVM (Java ${{ env.java_version }})
       uses: graalvm/setup-graalvm@v1
       with:
@@ -26,8 +28,29 @@ jobs:
         java-version: '${{ env.java_version }}'
         components: 'native-image'
 
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven
+
+    - name: Cache npm dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.npm
+          ~/.cache/Cypress/
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Set up swap space
+      if: runner.os == 'Linux'
+      uses: pierotofy/set-swap-space@v1.0
+      with:
+        swap-size-gb: 10
+
     - name: Build native images
-      run: ./mvnw package -Pnative,prod -DskipTests
+      run: ./mvnw -B -ntp package -Pnative,prod -DskipTests
 
     - name: Archive binary
       uses: actions/upload-artifact@v2
@@ -35,26 +58,27 @@ jobs:
         name: flickr2-${{ matrix.os }}-x86_64
         path: target/native-executable
 
-    - name: Get release version
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: Rename binary
-      run: mv target/native-executable.exe target/flickr2-${{ matrix.os }}-${{ env.RELEASE_VERSION }}-x86_64.exe
+      run: mv target/native-executable target/flickr2-${{ runner.os }}-${{ github.event.release.tag_name }}-x86_64
     - name: Upload release
       uses: alexellis/upload-assets@0.3.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        asset_paths: '["target/flickr2-${{ matrix.os }}*"]'
+        asset_paths: '["target/flickr2-${{ runner.os }}*"]'
 
   build-windows:
     name: GraalVM - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
         os: [windows-latest]
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: '${{ env.branch }}'
       - uses: ilammy/msvc-dev-cmd@v1
       - uses: microsoft/setup-msbuild@v1
 
@@ -65,10 +89,28 @@ jobs:
           java-version: '${{ env.java_version }}'
           components: 'native-image'
 
-      - name: Configure pagefile
-        uses: al-cheb/configure-pagefile-action@v1
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
 
-      - name: Setup pagefile
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/Cypress/
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Configure pagefile
+        uses: al-cheb/configure-pagefile-action@v1.2
+        with:
+          minimum-size: 10GB
+          maximum-size: 12GB
+
+      - name: Set up pagefile
         run: |
           (Get-CimInstance Win32_PageFileUsage).AllocatedBaseSize
       - name: mvnw --version
@@ -76,14 +118,11 @@ jobs:
         shell: cmd
 
       - name: Maven resolve
-        run: |
-          mvnw -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V -Pci dependency:resolve-plugins
+        run: mvnw -B -ntp dependency:resolve-plugins
         shell: cmd
 
       - name: Build native images
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-          mvnw -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V package -Pnative,prod -DskipTests -Pci -e
+        run: mvnw -B -ntp package -Pnative,prod -DskipTests
         shell: cmd
 
       - name: Archive binary
@@ -92,13 +131,12 @@ jobs:
           name: flickr-${{ matrix.os }}-x86_64.exe
           path: target/native-executable.exe
 
-      - name: Get release version
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Rename binary
-        run: mv target/native-executable.exe target/flickr2-${{ matrix.os }}-${{ env.RELEASE_VERSION }}-x86_64.exe
+        run: move target/native-executable.exe target/flickr2-${{ runner.os }}-${{ github.event.release.tag_name }}-x86_64.exe
       - name: Upload release
         uses: alexellis/upload-assets@0.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_paths: '["target/flickr2-${{ matrix.os }}*"]'
+          asset_paths: '["target/flickr2-${{ runner.os }}*"]'
+

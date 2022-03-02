@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +66,7 @@ public class PhotoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/photos")
-    public ResponseEntity<Photo> createPhoto(@Valid @RequestBody Photo photo) throws Exception {
+    public ResponseEntity<Photo> createPhoto(@Valid @RequestBody Photo photo) throws URISyntaxException {
         log.debug("REST request to save Photo : {}", photo);
         if (photo.getId() != null) {
             throw new BadRequestAlertException("A new photo cannot already have an ID", ENTITY_NAME, "idexists");
@@ -75,7 +74,7 @@ public class PhotoResource {
 
         try {
             photo = setMetadata(photo);
-        } catch (ImageProcessingException ipe) {
+        } catch (ImageProcessingException | IOException | MetadataException ipe) {
             log.error(ipe.getMessage());
         }
 
@@ -120,7 +119,7 @@ public class PhotoResource {
     /**
      * {@code PUT  /photos/:id} : Updates an existing photo.
      *
-     * @param id the id of the photo to save.
+     * @param id    the id of the photo to save.
      * @param photo the photo to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated photo,
      * or with status {@code 400 (Bad Request)} if the photo is not valid,
@@ -154,7 +153,7 @@ public class PhotoResource {
     /**
      * {@code PATCH  /photos/:id} : Partial updates given fields of an existing photo, field will ignore if it is null
      *
-     * @param id the id of the photo to save.
+     * @param id    the id of the photo to save.
      * @param photo the photo to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated photo,
      * or with status {@code 400 (Bad Request)} if the photo is not valid,
@@ -220,14 +219,14 @@ public class PhotoResource {
     /**
      * {@code GET  /photos} : get all the photos.
      *
-     * @param pageable the pagination information.
+     * @param pageable  the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of photos in body.
      */
     @GetMapping("/photos")
     public ResponseEntity<List<Photo>> getAllPhotos(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "false") boolean eagerload
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
     ) {
         log.debug("REST request to get a page of Photos");
         Page<Photo> page;
