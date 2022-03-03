@@ -1339,7 +1339,7 @@
                         <configuration>
                             <imageName>native-executable</imageName>
                             <buildArgs>
-                                <buildArg>--no-fallback</buildArg>
+                                <buildArg>--no-fallback --verbose -J-Xmx10g</buildArg>
                             </buildArgs>
                         </configuration>
                     </plugin>
