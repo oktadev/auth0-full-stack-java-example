@@ -124,6 +124,8 @@ jobs:
       - name: Build native images
         run: mvnw -B -ntp package -Pnative,prod -DskipTests
         shell: cmd
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: true
 
       - name: Archive binary
         uses: actions/upload-artifact@v2
