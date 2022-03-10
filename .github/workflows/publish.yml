@@ -18,54 +18,54 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: '${{ env.branch }}'
-    - name: Set up GraalVM (Java ${{ env.java_version }})
-      uses: graalvm/setup-graalvm@v1
-      with:
-        version: '${{ env.graalvm_version }}'
-        java-version: '${{ env.java_version }}'
-        components: 'native-image'
+      - uses: actions/checkout@v2
+        with:
+          ref: '${{ env.branch }}'
+      - name: Set up GraalVM (Java ${{ env.java_version }})
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '${{ env.graalvm_version }}'
+          java-version: '${{ env.java_version }}'
+          components: 'native-image'
 
-    - name: Cache Maven dependencies
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-maven
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
 
-    - name: Cache npm dependencies
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.npm
-          ~/.cache/Cypress/
-        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/Cypress/
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Set up swap space
-      if: runner.os == 'Linux'
-      uses: pierotofy/set-swap-space@v1.0
-      with:
-        swap-size-gb: 10
+      - name: Set up swap space
+        if: runner.os == 'Linux'
+        uses: pierotofy/set-swap-space@v1.0
+        with:
+          swap-size-gb: 10
 
-    - name: Build native images
-      run: ./mvnw -B -ntp package -Pnative,prod -DskipTests
+      - name: Build native images
+        run: ./mvnw -B -ntp package -Pnative,prod -DskipTests
 
-    - name: Archive binary
-      uses: actions/upload-artifact@v2
-      with:
-        name: flickr2-${{ matrix.os }}-x86_64
-        path: target/native-executable
+      - name: Archive binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: flickr2-${{ matrix.os }}-x86_64
+          path: target/native-executable
 
-    - name: Rename binary
-      run: mv target/native-executable target/flickr2-${{ runner.os }}-${{ github.event.release.tag_name }}-x86_64
-    - name: Upload release
-      uses: alexellis/upload-assets@0.3.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        asset_paths: '["target/flickr2-${{ runner.os }}*"]'
+      - name: Rename binary
+        run: mv target/native-executable target/flickr2-${{ runner.os }}-${{ github.event.release.tag_name }}-x86_64
+      - name: Upload release
+        uses: alexellis/upload-assets@0.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_paths: '["target/flickr2-${{ runner.os }}*"]'
 
   build-windows:
     name: GraalVM - ${{ matrix.os }}
@@ -139,4 +139,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_paths: '["target/flickr2-${{ runner.os }}*"]'
-

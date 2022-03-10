@@ -1,10 +1,10 @@
 # Full Stack Java Example with JHipster (React + Spring Boot) 🤓
- 
+
 This example app shows you how to create a slick-looking, full-stack, secure application using React, Spring Boot, and JHipster.
 
 Please read [Full Stack Java with React, Spring Boot, and JHipster][blog] to see how this app was created. To see how to convert this app to a native binary with Spring Native, see [Introducing Spring Native for JHipster: Serverless Full-Stack Made Easy][blog-spring-native].
 
-**Prerequisites:** 
+**Prerequisites:**
 
 - [Node.js 14+](https://nodejs.org/)
 - [Java 11+](https://sdkman.io)
@@ -13,10 +13,10 @@ Please read [Full Stack Java with React, Spring Boot, and JHipster][blog] to see
 
 > [Auth0](https://auth0.com) is an easy to implement, adaptable authentication and authorization platform. Basically, we make your login box awesome.
 
-* [Getting Started](#getting-started)
-* [Links](#links)
-* [Help](#help)
-* [License](#license)
+- [Getting Started](#getting-started)
+- [Links](#links)
+- [Help](#help)
+- [License](#license)
 
 ## Getting Started
 
@@ -36,11 +36,11 @@ export SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=<your-clien
 export JHIPSTER_SECURITY_OAUTH2_AUDIENCE=https://<your-auth0-domain>/api/v2/
 ```
 
-You'll need to create a new web application in Auth0 and fill in the `<...>` placeholders before this works. 
+You'll need to create a new web application in Auth0 and fill in the `<...>` placeholders before this works.
 
 ### Create an OpenID Connect App on Auth0
 
-Log in to your Auth0 account (or [sign up](https://auth0.com/signup) if you don't have an account). You should have a unique domain like `dev-xxx.eu.auth0.com`. 
+Log in to your Auth0 account (or [sign up](https://auth0.com/signup) if you don't have an account). You should have a unique domain like `dev-xxx.eu.auth0.com`.
 
 Press the **Create Application** button in [Applications section](https://manage.auth0.com/#/applications). Use a name like `JHipster Baby!`, select `Regular Web Applications`, and click **Create**.
 
@@ -53,7 +53,7 @@ Scroll to the bottom and click **Save Changes**.
 
 In the [roles](https://manage.auth0.com/#/roles) section, create new roles named `ROLE_ADMIN` and `ROLE_USER`.
 
-Create a new user account in the [users](https://manage.auth0.com/#/users) section. Click on the **Role** tab to assign the roles you just created to the new account. 
+Create a new user account in the [users](https://manage.auth0.com/#/users) section. Click on the **Role** tab to assign the roles you just created to the new account.
 
 _Make sure your new user's email is verified before attempting to log in!_
 
@@ -103,13 +103,13 @@ _Voilà_ - your full stack app is using Auth0! Open your favorite browser to `ht
 
 This example uses the following open source libraries:
 
-* [JHipster](https://www.jhipster.tech)
-* [Spring Boot](https://spring.io/projects/spring-boot)
-* [Spring Security](https://spring.io/projects/spring-security)
+- [JHipster](https://www.jhipster.tech)
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring Security](https://spring.io/projects/spring-security)
 
 ## Help
 
-Please post any questions as comments on the [blog post][blog]. 
+Please post any questions as comments on the [blog post][blog].
 
 ## License
 
