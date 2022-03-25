@@ -14,9 +14,15 @@
 
     <repositories>
         <repository>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
             <id>spring-releases</id>
             <url>https://repo.spring.io/release</url>
-            <name>Spring Releases</name>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -25,6 +31,13 @@
     </repositories>
 
     <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshot</id>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
         <pluginRepository>
             <id>spring-releases</id>
             <url>https://repo.spring.io/release</url>
@@ -102,7 +115,7 @@
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <repackage.classifier/>
-        <spring-native.version>0.11.3</spring-native.version>
+        <spring-native.version>0.11.4-SNAPSHOT</spring-native.version>
         <!-- jhipster-needle-maven-property -->
     </properties>
 
