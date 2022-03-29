@@ -48,7 +48,7 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
       ...photoEntity,
       ...values,
       tags: mapIdList(values.tags),
-      album: albums.find(it => it.id.toString() === values.album.toString()),
+      album: albums.find(it => it.id.toString() === values.albumId.toString()),
     };
 
     if (isNew) {
