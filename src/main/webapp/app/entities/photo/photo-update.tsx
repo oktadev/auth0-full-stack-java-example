@@ -150,7 +150,7 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 }}
               />
               {metadataRows}
-              <ValidatedField id="photo-album" name="albumId" data-cy="album" label={translate('flickr2App.photo.album')} type="select">
+              <ValidatedField id="photo-album" name="album" data-cy="album" label={translate('flickr2App.photo.album')} type="select">
                 <option value="" key="0" />
                 {albums
                   ? albums.map(otherEntity => (
