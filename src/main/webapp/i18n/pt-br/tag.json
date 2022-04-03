@@ -1,0 +1,25 @@
+{
+  "flickr2App": {
+    "tag": {
+      "home": {
+        "title": "Tags",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Tag",
+        "createOrEditLabel": "Criar ou editar Tag",
+        "notFound": "Nenhum Tag encontrado"
+      },
+      "created": "Um novo Tag foi criado com o identificador {{ param }}",
+      "updated": "Um Tag foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Tag foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Tag {{ id }}?"
+      },
+      "detail": {
+        "title": "Tag"
+      },
+      "id": "ID",
+      "name": "Name",
+      "photo": "Photo"
+    }
+  }
+}
