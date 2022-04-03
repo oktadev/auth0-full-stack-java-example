@@ -153,12 +153,21 @@ public class AlbumResource {
      * {@code GET  /albums} : get all the albums.
      *
      * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of albums in body.
      */
     @GetMapping("/albums")
-    public ResponseEntity<List<Album>> getAllAlbums(Pageable pageable) {
+    public ResponseEntity<List<Album>> getAllAlbums(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload
+    ) {
         log.debug("REST request to get a page of Albums");
-        Page<Album> page = albumRepository.findAll(pageable);
+        Page<Album> page;
+        if (eagerload) {
+            page = albumRepository.findAllWithEagerRelationships(pageable);
+        } else {
+            page = albumRepository.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -172,7 +181,7 @@ public class AlbumResource {
     @GetMapping("/albums/{id}")
     public ResponseEntity<Album> getAlbum(@PathVariable Long id) {
         log.debug("REST request to get Album : {}", id);
-        Optional<Album> album = albumRepository.findById(id);
+        Optional<Album> album = albumRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(album);
     }
 

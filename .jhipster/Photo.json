@@ -1,5 +1,9 @@
 {
-  "name": "Photo",
+  "applications": "*",
+  "changelogDate": "20211012075128",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "photo",
   "fields": [
     {
       "fieldName": "title",
@@ -34,31 +38,27 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Photo",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "title",
       "otherEntityName": "album",
       "otherEntityRelationshipName": "photo",
       "relationshipName": "album",
-      "otherEntityField": "title"
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-many",
+      "otherEntityField": "name",
       "otherEntityName": "tag",
       "otherEntityRelationshipName": "photo",
+      "ownerSide": true,
       "relationshipName": "tag",
-      "otherEntityField": "name",
-      "ownerSide": true
+      "relationshipType": "many-to-many"
     }
   ],
-  "entityTableName": "photo",
-  "dto": "no",
-  "pagination": "infinite-scroll",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "applications": "*",
-  "changelogDate": "20211012075128"
+  "service": "no"
 }

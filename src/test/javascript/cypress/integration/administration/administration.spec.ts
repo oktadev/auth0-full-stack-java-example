@@ -12,15 +12,8 @@ describe('/admin', () => {
   const password = Cypress.env('E2E_PASSWORD') ?? 'admin';
 
   beforeEach(() => {
-    cy.getOauth2Data();
-    cy.get('@oauth2Data').then(oauth2Data => {
-      cy.oauthLogin(oauth2Data, username, password);
-    });
-  });
-
-  afterEach(() => {
-    cy.oauthLogout();
-    cy.clearCache();
+    cy.login(username, password);
+    cy.visit('');
   });
 
   describe('/metrics', () => {

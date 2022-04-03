@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row } from 'reactstrap';
-import { Translate, translate, ValidatedBlobField, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { Button, Row, Col, FormText } from 'reactstrap';
+import { isNumber, Translate, translate, ValidatedField, ValidatedForm, ValidatedBlobField } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getEntities as getAlbums } from 'app/entities/album/album.reducer';
-import { getEntities as getTags } from 'app/entities/tag/tag.reducer';
-import { createEntity, getEntity, updateEntity } from './photo.reducer';
+
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+
+import { IAlbum } from 'app/shared/model/album.model';
+import { getEntities as getAlbums } from 'app/entities/album/album.reducer';
+import { ITag } from 'app/shared/model/tag.model';
+import { getEntities as getTags } from 'app/entities/tag/tag.reducer';
+import { IPhoto } from 'app/shared/model/photo.model';
+import { getEntity, updateEntity, createEntity, reset } from './photo.reducer';
 
 export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
