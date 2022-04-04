@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm, ValidatedBlobField } from 'react-jhipster';
+import { Button, Col, Row } from 'reactstrap';
+import { Translate, translate, ValidatedBlobField, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-
-import { IAlbum } from 'app/shared/model/album.model';
 import { getEntities as getAlbums } from 'app/entities/album/album.reducer';
-import { ITag } from 'app/shared/model/tag.model';
 import { getEntities as getTags } from 'app/entities/tag/tag.reducer';
-import { IPhoto } from 'app/shared/model/photo.model';
-import { getEntity, updateEntity, createEntity, reset } from './photo.reducer';
+import { createEntity, getEntity, updateEntity } from './photo.reducer';
 
 export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
@@ -66,21 +62,23 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const defaultValues = () =>
     isNew
       ? {
-          taken: displayDefaultDateTime(),
-          uploaded: displayDefaultDateTime(),
-        }
+        taken: displayDefaultDateTime(),
+        uploaded: displayDefaultDateTime(),
+      }
       : {
-          ...photoEntity,
-          taken: convertDateTimeFromServer(photoEntity.taken),
-          uploaded: convertDateTimeFromServer(photoEntity.uploaded),
-          album: photoEntity?.album?.id,
-          tags: photoEntity?.tags?.map(e => e.id.toString()),
-        };
+        ...photoEntity,
+        taken: convertDateTimeFromServer(photoEntity.taken),
+        uploaded: convertDateTimeFromServer(photoEntity.uploaded),
+        album: photoEntity?.album?.id,
+        tags: photoEntity?.tags?.map(e => e.id.toString()),
+      };
 
   const metadata = (
     <div>
-      <ValidatedField label={translate('flickr2App.photo.height')} id="photo-height" name="height" data-cy="height" type="text" />
-      <ValidatedField label={translate('flickr2App.photo.width')} id="photo-width" name="width" data-cy="width" type="text" />
+      <ValidatedField label={translate('flickr2App.photo.height')} id="photo-height" name="height" data-cy="height"
+                      type="text"/>
+      <ValidatedField label={translate('flickr2App.photo.width')} id="photo-width" name="width" data-cy="width"
+                      type="text"/>
       <ValidatedField
         label={translate('flickr2App.photo.taken')}
         id="photo-taken"
@@ -123,7 +121,7 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
                   readOnly
                   id="photo-id"
                   label={translate('global.field.id')}
-                  validate={{ required: true }}
+                  validate={{required: true}}
                 />
               ) : null}
               <ValidatedField
@@ -133,7 +131,7 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 data-cy="title"
                 type="text"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
+                  required: {value: true, message: translate('entity.validation.required')},
                 }}
               />
               <ValidatedField
@@ -151,40 +149,43 @@ export const PhotoUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 isImage
                 accept="image/*"
                 validate={{
-                  required: { value: true, message: translate('entity.validation.required') },
+                  required: {value: true, message: translate('entity.validation.required')},
                 }}
               />
               {metadataRows}
-              <ValidatedField id="photo-album" name="album" data-cy="album" label={translate('flickr2App.photo.album')} type="select">
-                <option value="" key="0" />
+              <ValidatedField id="photo-album" name="album" data-cy="album" label={translate('flickr2App.photo.album')}
+                              type="select">
+                <option value="" key="0"/>
                 {albums
                   ? albums.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.title}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.title}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
-              <ValidatedField label={translate('flickr2App.photo.tag')} id="photo-tag" data-cy="tag" type="select" multiple name="tags">
-                <option value="" key="0" />
+              <ValidatedField label={translate('flickr2App.photo.tag')} id="photo-tag" data-cy="tag" type="select"
+                              multiple name="tags">
+                <option value="" key="0"/>
                 {tags
                   ? tags.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.name}
-                      </option>
-                    ))
+                    <option value={otherEntity.id} key={otherEntity.id}>
+                      {otherEntity.name}
+                    </option>
+                  ))
                   : null}
               </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/photo" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit"
+                      disabled={updating}>
+                <FontAwesomeIcon icon="save"/>
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
