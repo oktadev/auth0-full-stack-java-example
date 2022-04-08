@@ -1,0 +1,64 @@
+{
+  "applications": "*",
+  "changelogDate": "20211012075128",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "photo",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "height",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "width",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "taken",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "uploaded",
+      "fieldType": "Instant"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Photo",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "title",
+      "otherEntityName": "album",
+      "otherEntityRelationshipName": "photo",
+      "relationshipName": "album",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "tag",
+      "otherEntityRelationshipName": "photo",
+      "ownerSide": true,
+      "relationshipName": "tag",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "no"
+}

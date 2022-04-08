@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20211012075129",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tag",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "2"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Tag",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "photo",
+      "otherEntityRelationshipName": "tag",
+      "ownerSide": false,
+      "relationshipName": "photo",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "no"
+}
