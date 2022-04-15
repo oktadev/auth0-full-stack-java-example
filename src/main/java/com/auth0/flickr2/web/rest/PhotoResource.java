@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -119,7 +120,7 @@ public class PhotoResource {
     /**
      * {@code PUT  /photos/:id} : Updates an existing photo.
      *
-     * @param id    the id of the photo to save.
+     * @param id the id of the photo to save.
      * @param photo the photo to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated photo,
      * or with status {@code 400 (Bad Request)} if the photo is not valid,
@@ -153,7 +154,7 @@ public class PhotoResource {
     /**
      * {@code PATCH  /photos/:id} : Partial updates given fields of an existing photo, field will ignore if it is null
      *
-     * @param id    the id of the photo to save.
+     * @param id the id of the photo to save.
      * @param photo the photo to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated photo,
      * or with status {@code 400 (Bad Request)} if the photo is not valid,
@@ -219,7 +220,7 @@ public class PhotoResource {
     /**
      * {@code GET  /photos} : get all the photos.
      *
-     * @param pageable  the pagination information.
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of photos in body.
      */
