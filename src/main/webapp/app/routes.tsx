@@ -5,15 +5,17 @@ import Loadable from 'react-loadable';
 import LoginRedirect from 'app/modules/login/login-redirect';
 import Logout from 'app/modules/login/logout';
 import Home from 'app/modules/home/home';
-import Entities from 'app/entities';
+import EntitiesRoutes from 'app/entities/routes';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
 
+const loading = <div>loading ...</div>;
+
 const Admin = Loadable({
   loader: () => import(/* webpackChunkName: "administration" */ 'app/modules/administration'),
-  loading: () => <div>loading ...</div>,
+  loading: () => loading,
 });
 
 const Routes = () => {
@@ -24,7 +26,7 @@ const Routes = () => {
         <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
         <ErrorBoundaryRoute path="/" exact component={Home} />
         <ErrorBoundaryRoute path="/oauth2/authorization/oidc" component={LoginRedirect} />
-        <PrivateRoute path="/" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
+        <PrivateRoute path="/" component={EntitiesRoutes} hasAnyAuthorities={[AUTHORITIES.USER]} />
         <ErrorBoundaryRoute component={PageNotFound} />
       </Switch>
     </div>

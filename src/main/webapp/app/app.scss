@@ -1,7 +1,7 @@
 // Override Boostrap variables
 @import '~bootswatch/dist/united/variables';
 // Import Bootstrap source files from node_modules
-@import 'node_modules/bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap';
 @import '~bootswatch/dist/united/bootswatch';
 body {
   margin: 0;

@@ -1,6 +1,7 @@
 package com.auth0.flickr2.repository;
 
 import com.auth0.flickr2.domain.Photo;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -29,7 +30,7 @@ public class PhotoRepositoryWithBagRelationshipsImpl implements PhotoRepositoryW
 
     @Override
     public List<Photo> fetchBagRelationships(List<Photo> photos) {
-        return Optional.of(photos).map(this::fetchTags).get();
+        return Optional.of(photos).map(this::fetchTags).orElse(Collections.emptyList());
     }
 
     Photo fetchTags(Photo result) {
