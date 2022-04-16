@@ -67,7 +67,7 @@ public class PhotoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/photos")
-    public ResponseEntity<Photo> createPhoto(@Valid @RequestBody Photo photo) throws Exception {
+    public ResponseEntity<Photo> createPhoto(@Valid @RequestBody Photo photo) throws URISyntaxException {
         log.debug("REST request to save Photo : {}", photo);
         if (photo.getId() != null) {
             throw new BadRequestAlertException("A new photo cannot already have an ID", ENTITY_NAME, "idexists");
@@ -75,7 +75,7 @@ public class PhotoResource {
 
         try {
             photo = setMetadata(photo);
-        } catch (ImageProcessingException ipe) {
+        } catch (ImageProcessingException | IOException | MetadataException ipe) {
             log.error(ipe.getMessage());
         }
 
@@ -128,8 +128,10 @@ public class PhotoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/photos/{id}")
-    public ResponseEntity<Photo> updatePhoto(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Photo photo)
-        throws URISyntaxException {
+    public ResponseEntity<Photo> updatePhoto(
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
+        @Valid @RequestBody Photo photo
+    ) throws URISyntaxException {
         log.debug("REST request to update Photo : {}, {}", id, photo);
         if (photo.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -162,7 +164,7 @@ public class PhotoResource {
      */
     @PatchMapping(value = "/photos/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Photo> partialUpdatePhoto(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody Photo photo
     ) throws URISyntaxException {
         log.debug("REST request to partial update Photo partially : {}, {}", id, photo);
@@ -224,8 +226,8 @@ public class PhotoResource {
      */
     @GetMapping("/photos")
     public ResponseEntity<List<Photo>> getAllPhotos(
-        Pageable pageable,
-        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
     ) {
         log.debug("REST request to get a page of Photos");
         Page<Photo> page;
@@ -245,7 +247,7 @@ public class PhotoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the photo, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/photos/{id}")
-    public ResponseEntity<Photo> getPhoto(@PathVariable Long id) {
+    public ResponseEntity<Photo> getPhoto(@PathVariable("id") Long id) {
         log.debug("REST request to get Photo : {}", id);
         Optional<Photo> photo = photoRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(photo);
@@ -258,7 +260,7 @@ public class PhotoResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/photos/{id}")
-    public ResponseEntity<Void> deletePhoto(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePhoto(@PathVariable("id") Long id) {
         log.debug("REST request to delete Photo : {}", id);
         photoRepository.deleteById(id);
         return ResponseEntity

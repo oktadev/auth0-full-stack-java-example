@@ -4,13 +4,14 @@ import { Button, Row, Col, FormText } from 'reactstrap';
 import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/shared/reducers/user-management';
-import { getEntity, updateEntity, createEntity, reset } from './album.reducer';
-import { IAlbum } from 'app/shared/model/album.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
+
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/shared/reducers/user-management';
+import { IAlbum } from 'app/shared/model/album.model';
+import { getEntity, updateEntity, createEntity, reset } from './album.reducer';
 
 export const AlbumUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const dispatch = useAppDispatch();
@@ -22,7 +23,6 @@ export const AlbumUpdate = (props: RouteComponentProps<{ id: string }>) => {
   const loading = useAppSelector(state => state.album.loading);
   const updating = useAppSelector(state => state.album.updating);
   const updateSuccess = useAppSelector(state => state.album.updateSuccess);
-
   const handleClose = () => {
     props.history.push('/album' + props.location.search);
   };
@@ -49,7 +49,7 @@ export const AlbumUpdate = (props: RouteComponentProps<{ id: string }>) => {
     const entity = {
       ...albumEntity,
       ...values,
-      user: users.find(it => it.id.toString() === values.userId.toString()),
+      user: users.find(it => it.id.toString() === values.user.toString()),
     };
 
     if (isNew) {
@@ -67,7 +67,7 @@ export const AlbumUpdate = (props: RouteComponentProps<{ id: string }>) => {
       : {
           ...albumEntity,
           created: convertDateTimeFromServer(albumEntity.created),
-          userId: albumEntity?.user?.id,
+          user: albumEntity?.user?.id,
         };
 
   return (
@@ -120,7 +120,7 @@ export const AlbumUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
               />
-              <ValidatedField id="album-user" name="userId" data-cy="user" label={translate('flickr2App.album.user')} type="select">
+              <ValidatedField id="album-user" name="user" data-cy="user" label={translate('flickr2App.album.user')} type="select">
                 <option value="" key="0" />
                 {users
                   ? users.map(otherEntity => (

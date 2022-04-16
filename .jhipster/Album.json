@@ -1,5 +1,9 @@
 {
-  "name": "Album",
+  "applications": "*",
+  "changelogDate": "20211012075127",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "album",
   "fields": [
     {
       "fieldName": "title",
@@ -16,23 +20,19 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Album",
+  "pagination": "pagination",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "login",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "album",
       "relationshipName": "user",
-      "otherEntityField": "login"
+      "relationshipType": "many-to-one"
     }
   ],
-  "entityTableName": "album",
-  "dto": "no",
-  "pagination": "pagination",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "applications": "*",
-  "changelogDate": "20211012075127"
+  "service": "no"
 }

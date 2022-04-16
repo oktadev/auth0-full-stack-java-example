@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 
 /**
@@ -16,7 +14,6 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "photo")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Photo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,7 +59,6 @@ public class Photo implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "rel_photo__tag", joinColumns = @JoinColumn(name = "photo_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "photos" }, allowSetters = true)
     private Set<Tag> tags = new HashSet<>();
 

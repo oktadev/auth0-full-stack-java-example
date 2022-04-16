@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   flickr2-postgresql:
-    image: postgres:13.5
+    image: postgres:14.2
     # volumes:
     #   - ~/volumes/jhipster/flickr2/postgresql/:/var/lib/postgresql/data/
     environment:

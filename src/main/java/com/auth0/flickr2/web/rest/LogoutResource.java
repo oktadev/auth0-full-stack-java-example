@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,11 +28,11 @@ public class LogoutResource {
      * {@code POST  /api/logout} : logout the current user.
      *
      * @param request the {@link HttpServletRequest}.
-     * @param idToken the ID token.
+     * @param oidcUser the OIDC user.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and a body with a global logout URL.
      */
     @PostMapping("/api/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request, @AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken) {
+    public ResponseEntity<?> logout(HttpServletRequest request, @AuthenticationPrincipal OidcUser oidcUser) {
         StringBuilder logoutUrl = new StringBuilder();
 
         String issuerUri = this.registration.getProviderDetails().getIssuerUri();
@@ -50,6 +51,7 @@ public class LogoutResource {
             logoutUrl.append("?client_id=").append(this.registration.getClientId()).append("&returnTo=").append(originUrl);
         } else {
             // Okta
+            OidcIdToken idToken = oidcUser.getIdToken();
             logoutUrl.append("?id_token_hint=").append(idToken.getTokenValue()).append("&post_logout_redirect_uri=").append(originUrl);
         }
 

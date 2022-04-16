@@ -18,7 +18,7 @@ services:
     ports:
       - 127.0.0.1:8080:8080
   flickr2-postgresql:
-    image: postgres:13.5
+    image: postgres:14.2
     # volumes:
     #   - ~/volumes/jhipster/flickr2/postgresql/:/var/lib/postgresql/data/
     environment:
@@ -30,7 +30,7 @@ services:
     ports:
       - 127.0.0.1:5432:5432
   keycloak:
-    image: jboss/keycloak:15.0.2
+    image: jboss/keycloak:16.1.0
     command:
       [
         '-b',

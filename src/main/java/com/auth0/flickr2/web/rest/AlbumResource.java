@@ -77,8 +77,10 @@ public class AlbumResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/albums/{id}")
-    public ResponseEntity<Album> updateAlbum(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Album album)
-        throws URISyntaxException {
+    public ResponseEntity<Album> updateAlbum(
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
+        @Valid @RequestBody Album album
+    ) throws URISyntaxException {
         log.debug("REST request to update Album : {}, {}", id, album);
         if (album.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -111,7 +113,7 @@ public class AlbumResource {
      */
     @PatchMapping(value = "/albums/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Album> partialUpdateAlbum(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(name = "id", value = "id", required = false) final Long id,
         @NotNull @RequestBody Album album
     ) throws URISyntaxException {
         log.debug("REST request to partial update Album partially : {}, {}", id, album);
@@ -153,12 +155,21 @@ public class AlbumResource {
      * {@code GET  /albums} : get all the albums.
      *
      * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of albums in body.
      */
     @GetMapping("/albums")
-    public ResponseEntity<List<Album>> getAllAlbums(Pageable pageable) {
+    public ResponseEntity<List<Album>> getAllAlbums(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+    ) {
         log.debug("REST request to get a page of Albums");
-        Page<Album> page = albumRepository.findAll(pageable);
+        Page<Album> page;
+        if (eagerload) {
+            page = albumRepository.findAllWithEagerRelationships(pageable);
+        } else {
+            page = albumRepository.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -170,9 +181,9 @@ public class AlbumResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the album, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/albums/{id}")
-    public ResponseEntity<Album> getAlbum(@PathVariable Long id) {
+    public ResponseEntity<Album> getAlbum(@PathVariable("id") Long id) {
         log.debug("REST request to get Album : {}", id);
-        Optional<Album> album = albumRepository.findById(id);
+        Optional<Album> album = albumRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(album);
     }
 
@@ -183,7 +194,7 @@ public class AlbumResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/albums/{id}")
-    public ResponseEntity<Void> deleteAlbum(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAlbum(@PathVariable("id") Long id) {
         log.debug("REST request to delete Album : {}", id);
         albumRepository.deleteById(id);
         return ResponseEntity

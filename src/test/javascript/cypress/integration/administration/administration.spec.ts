@@ -12,18 +12,11 @@ describe('/admin', () => {
   const password = Cypress.env('E2E_PASSWORD') ?? 'admin';
 
   beforeEach(() => {
-    cy.getOauth2Data();
-    cy.get('@oauth2Data').then(oauth2Data => {
-      cy.oauthLogin(oauth2Data, username, password);
-    });
+    cy.login(username, password);
+    cy.visit('');
   });
 
-  afterEach(() => {
-    cy.oauthLogout();
-    cy.clearCache();
-  });
-
-  describe('/metrics', () => {
+  describe.skip('/metrics', () => {
     it('should load the page', () => {
       cy.clickOnAdminMenuItem('metrics');
       cy.get(metricsPageHeadingSelector).should('be.visible');
@@ -37,14 +30,14 @@ describe('/admin', () => {
     });
   });
 
-  describe('/logs', () => {
+  describe.skip('/logs', () => {
     it('should load the page', () => {
       cy.clickOnAdminMenuItem('logs');
       cy.get(logsPageHeadingSelector).should('be.visible');
     });
   });
 
-  describe('/configuration', () => {
+  describe.skip('/configuration', () => {
     it('should load the page', () => {
       cy.clickOnAdminMenuItem('configuration');
       cy.get(configurationPageHeadingSelector).should('be.visible');

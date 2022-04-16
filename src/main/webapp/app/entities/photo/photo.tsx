@@ -10,7 +10,7 @@ import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import Gallery from 'react-photo-gallery';
+import PhotoAlbum from 'react-photo-album';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 
 export const Photo = (props: RouteComponentProps<{ url: string }>) => {
@@ -129,7 +129,7 @@ export const Photo = (props: RouteComponentProps<{ url: string }>) => {
           </Link>
         </div>
       </h2>
-      <Gallery photos={photoSet} onClick={openLightbox} />
+      <PhotoAlbum photos={photoSet} layout="rows" onClick={openLightbox} />
       <ModalGateway>
         {viewerIsOpen ? (
           <Modal onClose={closeLightbox}>
