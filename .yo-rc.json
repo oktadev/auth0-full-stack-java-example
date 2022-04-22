@@ -6,7 +6,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-native",
-        "version": "1.0.0"
+        "version": "1.1.2"
       }
     ],
     "buildTool": "maven",
@@ -30,7 +30,7 @@
     "herokuDeployType": "git",
     "herokuJavaVersion": "11",
     "jhiPrefix": "jhi",
-    "jhipsterVersion": "7.7.0",
+    "jhipsterVersion": "7.8.1",
     "languages": ["en", "pt-br"],
     "lastLiquibaseTimestamp": 1634025089000,
     "messageBroker": false,
@@ -38,7 +38,7 @@
     "otherModules": [
       {
         "name": "generator-jhipster-native",
-        "version": "1.0.0"
+        "version": "1.1.2"
       }
     ],
     "packageName": "com.auth0.flickr2",
