@@ -408,7 +408,23 @@ In the interest of full disclosure, here's the command I used to measure the amo
 ps -o pid,rss,command | grep --color native | awk '{$2=int($2/1024)" MB";}{ print;}'
 ----
 
-What about the MacBook Pro M1 Max?
+.What about the MacBook Pro M1 Max?
+****
+
+My MacBook Pro (16-inch, 2021) with Apple M1 Max builds _much_ faster but uses more memory.
+
+[cols="<,^,^",options=header]
+|===
+|Metric | M1 | Intel
+
+|Build time | `1m 49s` | `3m 15s`
+|Milliseconds to start | `433` | `577`
+|MB memory used after starting | `204` | `178`
+|Memory used after `npm run e2e` | `249` | `211`
+|===
+
+// start: started 3 times and took fastest
+****
 
 == Should you use GraalVM instead of the JVM?
 
