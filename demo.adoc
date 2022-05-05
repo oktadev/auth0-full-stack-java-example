@@ -1,6 +1,7 @@
 :experimental:
 :commandkey: &#8984;
 :toc: macro
+:source-highlighter: highlight.js
 
 = Full Stack Java with React, Spring Boot, and JHipster Demo Steps
 
@@ -44,12 +45,12 @@ Why React? Because it's currently the https://trends.google.com/trends/explore?q
 
 . Choose the defaults except for:
 
-  - name: `flickr2`
-  - package: `com.auth0.flickr2`
-  - authentication: `OAuth 2.0 / OIDC`
-  - client: `React`
-  - bootswatch: `United > Dark`
-  - testing: `Cypress`
+- name: `flickr2`
+- package: `com.auth0.flickr2`
+- authentication: `OAuth 2.0 / OIDC`
+- client: `React`
+- bootswatch: `United > Dark`
+- testing: `Cypress`
 
 === Verify Everything Works with Cypress and Keycloak
 
@@ -89,8 +90,8 @@ WARNING: Modify your existing .gitignore file to have *.env so you don't acciden
 
 . Switch to the *Settings* tab and configure your application settings:
 
-  - Allowed Callback URLs: `\http://localhost:8080/login/oauth2/code/oidc`
-  - Allowed Logout URLs: `\http://localhost:8080/`
+- Allowed Callback URLs: `\http://localhost:8080/login/oauth2/code/oidc`
+- Allowed Logout URLs: `\http://localhost:8080/`
 
 . Scroll to the bottom and click *Save Changes*.
 
@@ -471,8 +472,8 @@ Use `heroku logs --tail` to watch your logs.
 
 . https://auth0.com/auth/login[Log in] to your Auth0 account, navigate to your app, and add your Heroku URLs as valid redirect URIs:
 
-  - Allowed Callback URLs: `\https://flickr-2.herokuapp.com/login/oauth2/code/oidc`
-  - Allowed Logout URLs: `\https://flickr-2.herokuapp.com`
+- Allowed Callback URLs: `\https://flickr-2.herokuapp.com/login/oauth2/code/oidc`
+- Allowed Logout URLs: `\https://flickr-2.herokuapp.com`
 
 . Test it with https://developers.google.com/web/tools/lighthouse/[Lighthouse] or https://webpagetest.org/[WebPageTest].
 
@@ -485,4 +486,3 @@ Wahoo! You streamlined your path to full-stack Java development with JHipster!! 
 🤓 Find the code on GitHub: https://github.com/oktadev/auth0-full-stack-java-example[@oktadev/auth0-full-stack-java-example]
 
 👀 Read the blog post: https://auth0.com/blog/full-stack-java-with-react-spring-boot-and-jhipster/[Full Stack Java with React, Spring Boot, and JHipster]
-
