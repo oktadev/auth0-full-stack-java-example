@@ -2,7 +2,11 @@
 
 This example app shows you how to create a slick-looking, full-stack, secure application using React, Spring Boot, and JHipster.
 
-Please read [Full Stack Java with React, Spring Boot, and JHipster][blog] to see how this app was created. To see how to convert this app to a native binary with Spring Native, see [Introducing Spring Native for JHipster: Serverless Full-Stack Made Easy][blog-spring-native].
+Please read the following blog posts to learn more:
+
+- [Full Stack Java with React, Spring Boot, and JHipster][blog] to see how this app was created.
+- [Introducing Spring Native for JHipster: Serverless Full-Stack Made Easy][blog-spring-native] to convert this app to an executable with Spring Native.
+- [Use GitHub Actions to Build GraalVM Native Images][blog-github-graalvm] to automate your GraalVM builds.
 
 **Prerequisites:**
 
@@ -117,3 +121,4 @@ Apache 2.0, see [LICENSE](LICENSE).
 
 [blog]: https://auth0.com/blog/full-stack-java-with-react-spring-boot-and-jhipster/
 [blog-spring-native]: https://developer.okta.com/blog/2022/03/03/spring-native-jhipster
+[blog-github-graalvm]: https://developer.okta.com/blog/2022/04/22/github-actions-graalvm
