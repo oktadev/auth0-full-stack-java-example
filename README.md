@@ -2,7 +2,7 @@
 
 This example app shows you how to create a slick-looking, full-stack, secure application using React, Spring Boot, and JHipster.
 
-Please read the following blog posts to learn about more:
+Please read the following blog posts to learn more:
 
 - [Full Stack Java with React, Spring Boot, and JHipster][blog] to see how this app was created.
 - [Introducing Spring Native for JHipster: Serverless Full-Stack Made Easy][blog-spring-native] to convert this app to an executable with Spring Native.
